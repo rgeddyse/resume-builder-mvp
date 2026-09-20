@@ -1,12 +1,17 @@
 # Resume Builder MVP
 
-Fast local MVP built with Streamlit with AI-powered resume building features.
+Fast local MVP built with Streamlit with AI-powered resume building features and interactive drag-and-drop layout editor.
 
 ## Features
 
 ### Core Resume Building
 - **15 Professional Templates** - Modern split layouts, ATS-friendly designs, and creative templates
-- **Live Resume Preview** - Real-time preview updates as you edit
+- **Interactive Layout Editor** - Drag-and-drop style component arrangement with visual preview
+- **Component-Based Building** - 11 reusable components (Name, Skills, Experience, etc.) that can be arranged in different layout areas
+- **4 Layout Structures** - Sidebar Left, Sidebar Right, Single Column, Three Column
+- **4 Layout Areas** - Header, Sidebar, Main Content, Footer with component limits
+- **Quick Layout Presets** - Classic, Modern Split, Minimal, Compact one-click layouts
+- **Live Resume Preview** - Real-time preview updates as you edit with exact HTML match
 - **Custom HTML Templates** - Upload your own templates with documented replacement tokens
 - **Color System** - 7 color palettes plus custom accent and secondary colors
 - **Background Textures** - 10 professional patterns (dots, grids, circles, grain, etc.)
@@ -14,7 +19,8 @@ Fast local MVP built with Streamlit with AI-powered resume building features.
 - **Compact Spacing** - Toggle between comfortable and compact spacing
 
 ### Content Management
-- **Resume Import** - Import from PDF, DOCX, and TXT with best-effort field extraction
+- **AI-Enhanced Resume Parsing** - Advanced parsing with fuzzy section detection (30+ variations) and AI validation
+- **Resume Import** - Import from PDF, DOCX, and TXT with intelligent field extraction
 - **Profile Photo System** - Upload from file/gallery or capture from camera
 - **Photo Beautification** - Adjust size, zoom, shape, and border styles
 - **Extended Contact Details** - LinkedIn, GitHub, portfolio, email, phone, location
@@ -171,15 +177,71 @@ For example, `color: {{accent}}` lets uploaded templates inherit the selected pa
 
 ## Resume Import
 
-Upload PDF, DOCX, or TXT from the Import tab. The parser extracts plain text locally and
-uses section headings such as `Summary`, `Skills`, `Experience`, `Projects`, `Education`,
-`Certifications`, `Languages`, and `Awards` to pre-fill the editor. This is intentionally
-best-effort; scanned image PDFs still need OCR in a future version.
+Upload PDF, DOCX, or TXT from the Import tab. The parser uses AI-enhanced parsing with fuzzy section detection (30+ variations) and optional AI validation (when OPENAI_API_KEY is configured). The parser intelligently extracts fields and can validate/correct parsed data using GPT-3.5-turbo. This provides significantly improved accuracy compared to traditional rule-based parsing.
+
+## Interactive Layout Editor
+
+The Template tab includes a powerful drag-and-drop style layout editor that allows you to visually arrange resume components:
+
+### Available Components (11 total)
+- 👤 **Name** - Your full name
+- 💼 **Job Title** - Your professional title
+- 📞 **Contact Info** - Email, phone, location
+- 📝 **Summary** - Professional summary
+- 🛠️ **Skills** - Technical and soft skills
+- 💻 **Experience** - Work experience entries
+- 🎓 **Education** - Educational background
+- 🚀 **Projects** - Project descriptions
+- 📜 **Certifications** - Professional certifications
+- 🌍 **Languages** - Language proficiency
+- 🏆 **Awards** - Awards and achievements
+
+### Layout Areas (4 total)
+- **Header Area** - Top section (max 3 components)
+- **Sidebar** - Left/right column (max 4 components)
+- **Main Content** - Primary area (max 6 components)
+- **Footer** - Bottom section (max 2 components)
+
+### Layout Structures (4 total)
+- **Sidebar Left** - 30% sidebar on left
+- **Sidebar Right** - 30% sidebar on right
+- **Single Column** - Traditional vertical layout
+- **Three Column** - 25% sidebar with header/main/footer
+
+### How to Use
+1. Go to the **Template** tab
+2. Scroll to **🎨 Custom Layout Editor**
+3. Select a **Layout Structure** (Sidebar Left, Sidebar Right, Single Column, Three Column)
+4. **Add Components** - Click "Add" to place components in available areas
+5. **Arrange Components** - Use ↑↓ buttons to reorder within areas
+6. **Remove Components** - Remove last component from any area
+7. **Quick Presets** - Use Classic, Modern Split, Minimal, Compact for instant layouts
+8. **Toggle** - Enable "Use Custom Layout Instead of Template" to use your custom arrangement
+9. **Preview** - See real-time visual preview of your layout
+
+### Layout Preview
+The editor provides a real-time visual preview showing:
+- Component placement in different areas
+- Layout structure visualization
+- Component icons and names
+- Area capacity indicators
+- Grid layout representation
+
+### Custom vs Template Mode
+- **Template Mode**: Uses traditional HTML templates with fixed layouts
+- **Custom Mode**: Uses your component arrangement with dynamic HTML generation
+- Toggle between modes instantly with the switch in the Template tab
 
 ## Current Features
 
 The resume builder now includes all standard features found in top-tier resume builders:
 - ✅ Multiple professional templates with modern designs
+- ✅ Interactive drag-and-drop layout editor with component arrangement
+- ✅ Component-based resume building with 11 reusable components
+- ✅ 4 layout structures (Sidebar Left, Sidebar Right, Single Column, Three Column)
+- ✅ Quick layout presets (Classic, Modern Split, Minimal, Compact)
+- ✅ Real-time visual layout preview
+- ✅ AI-enhanced resume parsing with fuzzy section detection
 - ✅ AI-powered content assistance and suggestions
 - ✅ Grammar and spell checking
 - ✅ ATS optimization with real-time scoring
@@ -190,6 +252,7 @@ The resume builder now includes all standard features found in top-tier resume b
 - ✅ Profile photo with beautification controls
 - ✅ Career research and salary insights
 - ✅ LinkedIn integration support
+- ✅ Live preview with exact HTML match to downloaded files
 
 ## Troubleshooting
 
@@ -216,6 +279,23 @@ The resume builder now includes all standard features found in top-tier resume b
 - Ensure you're inside the virtual environment
 - Try `pip install --upgrade streamlit` to update Streamlit
 - Check that port 8501 is not already in use
+
+**Live preview doesn't match downloaded HTML:**
+- The preview now includes CSS injection to force full-width rendering
+- This ensures the preview matches the downloaded HTML exactly
+- If issues persist, clear browser cache and reload the page
+
+**AI parsing not working:**
+- Set OPENAI_API_KEY environment variable to enable AI validation
+- Without the key, the system uses enhanced rule-based parsing
+- AI validation requires internet connection and valid API key
+- The app will show "(AI-validated)" or "(rule-based)" status for parsing
+
+**Layout editor components not appearing:**
+- Ensure you've added components to layout areas
+- Check that the layout structure includes the areas you're using
+- Try switching to a different layout structure
+- Use quick presets to reset to a known working layout
 
 **Templates don't appear:**
 - Ensure the `templates/` folder exists and contains HTML files
