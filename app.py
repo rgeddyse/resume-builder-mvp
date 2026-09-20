@@ -88,9 +88,9 @@ RESUME_COMPONENTS = {
 LAYOUT_AREAS = {
     "header": {
         "name": "Header Area",
-        "description": "Top section with name, title, and contact info",
-        "max_components": 3,
-        "suggested_components": ["name", "title", "contact"]
+        "description": "Top section with name, title, contact info, and profile photo",
+        "max_components": 4,
+        "suggested_components": ["name", "title", "contact", "profile_photo"]
     },
     "sidebar": {
         "name": "Sidebar",
@@ -117,6 +117,7 @@ AVAILABLE_COMPONENTS = {
     "name": {"name": "Name", "icon": "👤", "type": "text"},
     "title": {"name": "Job Title", "icon": "💼", "type": "text"},
     "contact": {"name": "Contact Info", "icon": "📞", "type": "text"},
+    "profile_photo": {"name": "Profile Photo", "icon": "📸", "type": "image"},
     "summary": {"name": "Summary", "icon": "📝", "type": "long_text"},
     "skills": {"name": "Skills", "icon": "🛠️", "type": "list"},
     "experience": {"name": "Experience", "icon": "💻", "type": "long_list"},
@@ -266,25 +267,25 @@ def render_drag_drop_layout_editor():
     
     presets = {
         "Classic": {
-            "header": ["name", "title", "contact"],
+            "header": ["name", "title", "contact", "profile_photo"],
             "sidebar": [],
             "main_content": ["summary", "experience", "education", "skills", "projects"],
             "footer": ["awards", "certifications"]
         },
         "Modern Split": {
-            "header": ["name", "title"],
+            "header": ["name", "title", "profile_photo"],
             "sidebar": ["contact", "skills", "languages"],
             "main_content": ["summary", "experience", "projects", "education"],
             "footer": ["awards", "certifications"]
         },
         "Minimal": {
-            "header": ["name", "title", "contact"],
+            "header": ["name", "title", "contact", "profile_photo"],
             "sidebar": [],
             "main_content": ["summary", "experience", "education"],
             "footer": []
         },
         "Compact": {
-            "header": ["name", "title"],
+            "header": ["name", "title", "profile_photo"],
             "sidebar": ["contact", "skills"],
             "main_content": ["summary", "experience", "education"],
             "footer": []
@@ -421,11 +422,12 @@ def render_custom_layout_html(custom_layout, structure, data, theme):
     """Render the actual HTML based on custom layout"""
     structure_info = LAYOUT_STRUCTURE[structure]
     
-    # Get component data
+    # Get component data including profile photo
     component_data = {
         "name": data.get("name", ""),
         "title": data.get("title", ""),
         "contact": f"{data.get('email', '')} | {data.get('phone', '')} | {data.get('location', '')}",
+        "profile_photo": data.get("profile_photo"),
         "summary": data.get("summary", ""),
         "skills": data.get("skills", ""),
         "experience": data.get("experience", ""),
@@ -496,6 +498,7 @@ def render_custom_layout_html(custom_layout, structure, data, theme):
             .component {{ margin-bottom: 25px; }}
             .component-title {{ font-size: 18px; font-weight: bold; color: {theme.get('accent', '#2563eb')}; border-bottom: 2px solid {theme.get('accent', '#2563eb')}; padding-bottom: 8px; margin-bottom: 12px; }}
             .component-content {{ line-height: 1.6; }}
+            .component-content img {{ max-width: 100%; height: auto; }}
         </style>
     </head>
     <body>
@@ -512,6 +515,41 @@ def render_component_html(comp_key, component_data, theme):
     
     if not data:
         return ""
+    
+    # Special handling for profile photo component
+    if comp_key == "profile_photo" and data:
+        try:
+            import base64
+            if isinstance(data, bytes):
+                base64_image = base64.b64encode(data).decode()
+                mime_type = "image/jpeg"
+                if len(data) >= 8:
+                    if data[:8] == b'\x89PNG\r\n\x1a\n':
+                        mime_type = "image/png"
+                    elif data[:2] == b'\xff\xd8':
+                        mime_type = "image/jpeg"
+                
+                # Use smaller size for profile photo in custom layouts
+                photo_style = """
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    display: block;
+                    margin: 0 auto 15px auto;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                """
+                
+                return f"""
+                <div class="component">
+                    <div class="component-title">{comp_info['icon']} {comp_info['name']}</div>
+                    <div class="component-content" style="text-align: center;">
+                        <img src="data:{mime_type};base64,{base64_image}" alt="Profile Photo" style="{photo_style}" />
+                    </div>
+                </div>
+                """
+        except Exception as e:
+            print(f"Error rendering profile photo: {e}")
     
     # Convert newlines to breaks outside of f-string
     data_html = data.replace('\n', '<br>')
@@ -572,14 +610,14 @@ Graduated with Honors""",
     "languages": "English (Professional), Hindi (Native), Spanish (Basic)",
     "awards": "Employee of the Year 2022\nInnovation Award 2021\nBest Project Award 2019",
     "profile_photo": None,
-    "photo_size": 80,
+    "photo_size": 120,
     "photo_shape": "circle",
     "photo_border": "none",
     "photo_zoom": 100,
     "layout_category": "standard",
     "layout_name": "classic_single",
     "custom_layout": {
-        "header": ["name", "title", "contact"],
+        "header": ["name", "title", "contact", "profile_photo"],
         "sidebar": ["skills", "languages"],
         "main_content": ["summary", "experience", "projects", "education"],
         "footer": ["awards", "certifications"]
@@ -976,11 +1014,10 @@ def template_tokens(data, theme):
                     elif image_data[:2] == b'\xff\xd8':
                         mime_type = "image/jpeg"
                 
-                # Apply photo settings
-                photo_size = data.get("photo_size", 80)
+                # Apply photo settings with controlled sizing
+                photo_size = data.get("photo_size", 120)
                 photo_shape = data.get("photo_shape", "circle")
                 photo_border = data.get("photo_border", "none")
-                photo_zoom = data.get("photo_zoom", 100)
                 
                 # Build CSS styles based on settings
                 border_radius = "50%" if photo_shape == "circle" else "8px" if photo_shape == "rounded" else "4px"
@@ -991,18 +1028,15 @@ def template_tokens(data, theme):
                 elif photo_border == "shadow":
                     border_style = f"box-shadow: 0 4px 12px rgba(0,0,0,0.2);"
                 
-                # Calculate zoom using background-size approach for better quality
-                zoom_value = photo_zoom / 100
-                
+                # Use reasonable size that won't overflow templates
                 photo_style = f"""
-                    width: {photo_size}px;
-                    height: {photo_size}px;
+                    max-width: {photo_size}px;
+                    max-height: {photo_size}px;
                     border-radius: {border_radius};
                     {border_style}
                     object-fit: cover;
-                    display: inline-block;
-                    max-width: {photo_size}px;
-                    max-height: {photo_size}px;
+                    display: block;
+                    margin: 0 auto;
                 """
                 
                 profile_photo_html = f'<img src="data:{mime_type};base64,{base64_image}" alt="Profile Photo" class="profile-photo" style="{photo_style}" />'
@@ -1610,7 +1644,7 @@ with editor:
             
             col1, col2 = st.columns(2)
             with col1:
-                photo_size = st.slider("Photo size (px)", 40, 150, st.session_state.get("photo_size", 80))
+                photo_size = st.slider("Photo size (px)", 80, 200, st.session_state.get("photo_size", 120))
                 st.session_state["photo_size"] = photo_size
             
             with col2:
