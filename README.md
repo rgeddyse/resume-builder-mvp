@@ -44,8 +44,38 @@ Fast local MVP built with Streamlit with AI-powered resume building features.
 ### Prerequisites
 - Python 3.7 or higher
 - pip package manager
+- Git (for cloning the repository)
 
-### Linux Installation
+### Quick Start (Recommended)
+
+For your convenience, the repository includes startup scripts for each platform:
+
+**Linux/macOS:**
+```bash
+# Clone the repository
+git clone https://github.com/rgeddyse/resume-builder-mvp.git
+cd resume-builder-mvp
+
+# Run the startup script (creates venv, installs dependencies, and starts app)
+chmod +x start_mac.sh  # Make script executable on Linux
+./start_mac.sh
+```
+
+**Windows:**
+```bash
+# Clone the repository
+git clone https://github.com/rgeddyse/resume-builder-mvp.git
+cd resume-builder-mvp
+
+# Run the startup script (creates venv, installs dependencies, and starts app)
+start_windows.bat
+```
+
+### Manual Installation
+
+If you prefer manual setup or encounter issues with the startup scripts:
+
+#### Linux Installation
 
 ```bash
 # Clone the repository
@@ -65,7 +95,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-### Windows Installation
+#### Windows Installation
 
 ```bash
 # Clone the repository
@@ -85,7 +115,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-### macOS Installation
+#### macOS Installation
 
 ```bash
 # Clone the repository
@@ -160,6 +190,64 @@ The resume builder now includes all standard features found in top-tier resume b
 - ✅ Profile photo with beautification controls
 - ✅ Career research and salary insights
 - ✅ LinkedIn integration support
+
+## Troubleshooting
+
+### Common Issues
+
+**Python not found:**
+- Ensure Python 3.7+ is installed. Download from [python.org](https://python.org)
+- On Windows, you may need to add Python to your PATH during installation
+
+**pip not found:**
+- Ensure you're using the Python version that includes pip
+- Try `python -m pip install --upgrade pip` to upgrade pip
+
+**Virtual environment activation fails:**
+- On Windows: Use `.venv\Scripts\activate` instead of `source .venv/bin/activate`
+- On Linux/macOS: Ensure you have `python3-venv` installed (sudo apt-get install python3-venv on Ubuntu)
+
+**Dependencies fail to install:**
+- Some packages (like language-tool-python) may require additional system dependencies
+- If installation fails, the app will still work with fallback functionality
+- For PDF export, ensure you have the required system libraries or use HTML export instead
+
+**Streamlit doesn't start:**
+- Ensure you're inside the virtual environment
+- Try `pip install --upgrade streamlit` to update Streamlit
+- Check that port 8501 is not already in use
+
+**Templates don't appear:**
+- Ensure the `templates/` folder exists and contains HTML files
+- Restart Streamlit after adding new templates
+- Check that template files have the correct `.html` extension
+
+## Project Structure
+
+```
+resume-builder-mvp/
+├── app.py                 # Main Streamlit application
+├── requirements.txt       # Python dependencies
+├── README.md             # This file
+├── start_mac.sh          # Quick start script for macOS/Linux
+├── start_windows.bat     # Quick start script for Windows
+├── .gitignore           # Git ignore rules
+└── templates/           # HTML resume templates
+    ├── aurora-sidebar.html
+    ├── clean-ats.html
+    ├── concentric-circles.html
+    ├── consultant-grid.html
+    ├── editorial-column.html
+    ├── executive-band.html
+    ├── geometric-pattern.html
+    ├── gradient-sidebar.html
+    ├── paper-texture.html
+    ├── pastel-split.html
+    ├── quiet-luxury.html
+    ├── ribbon-profile.html
+    ├── right-panel-split.html
+    └── timeline-color.html
+```
 
 ## License
 
