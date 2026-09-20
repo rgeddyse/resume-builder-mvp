@@ -1,0 +1,50 @@
+<!-- template:name=Right Panel Split; style=Minimal resume with light right-side details panel; source_note=Original local template based on current image-search layout patterns -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
+    * { box-sizing: border-box; }
+    body { margin: 0; {{page_background}} color: #1f2937; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 870px; min-height: 1120px; margin: 20px auto; {{paper_background}} display: grid; grid-template-columns: 1fr 30%; box-shadow: 0 20px 45px rgba(15, 23, 42, .11); }
+    .main { padding: 44px 42px 44px 46px; }
+    .panel { background: #f3f6f9; padding: 44px 24px; border-left: 1px solid #e2e8f0; }
+    .contact-block { background: color-mix(in srgb, var(--accent) 88%, #111827); color: #fff; padding: 18px; margin: -18px -8px 26px; border-radius: 4px; display: grid; gap: 7px; font-size: 12px; word-break: break-word; }
+    h1 { margin: 0; color: #111827; font-size: 36px; line-height: 1.03; letter-spacing: 0; }
+    .title { margin: 8px 0 22px; color: var(--accent); font-weight: 800; }
+    h2 { margin: 24px 0 10px; color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .09em; }
+    h2::after { content: ""; display: inline-block; width: 28px; height: 2px; margin-left: 8px; vertical-align: middle; background: var(--secondary); }
+    .panel h2 { color: var(--accent); }
+    h3 { margin: 0 0 5px; color: var(--accent); font-size: 15px; }
+    .item { margin-bottom: 15px; }
+    ul { margin: 7px 0 0 18px; padding: 0; }
+    li { margin-bottom: 5px; }
+    .skill { display: block; font-size: 12px; padding: 5px 0; border-bottom: 1px solid #dbe3ea; }
+    .main .skill { display: inline-block; border: 1px solid color-mix(in srgb, var(--secondary) 42%, white); background: color-mix(in srgb, var(--secondary) 14%, white); padding: 5px 8px; margin: 0 5px 7px 0; border-radius: 4px; }
+    .compact .item { margin-bottom: 9px; }
+    @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
+    @media (max-width: 760px) { .page { grid-template-columns: 1fr; margin: 0; } .main, .panel { padding: 28px; } .panel { border-left: 0; } }
+  </style>
+</head>
+<body>
+  <div class="page {{density}}">
+    <main class="main">
+      <h1>{{name}}</h1>
+      <div class="title">{{title}}</div>
+      {{summary_section}}
+      {{experience_section}}
+      {{projects_section}}
+      {{awards_section}}
+    </main>
+    <aside class="panel">
+      <div class="contact-block">{{contact_items}}</div>
+      {{skills_section}}
+      {{education_section}}
+      {{certifications_section}}
+      {{languages_section}}
+    </aside>
+  </div>
+</body>
+</html>

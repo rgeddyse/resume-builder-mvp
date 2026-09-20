@@ -1,0 +1,56 @@
+<!-- template:name=Ribbon Profile; style=Professional resume with colored header ribbon and lower split columns; source_note=Original local professional template -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
+    * { box-sizing: border-box; }
+    body { margin: 0; {{page_background}} color: #172033; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 900px; min-height: 1120px; margin: 20px auto; {{paper_background}} box-shadow: 0 18px 44px rgba(15,23,42,.13); overflow: hidden; }
+    header { background: linear-gradient(120deg, var(--accent), color-mix(in srgb, var(--secondary) 62%, var(--accent))); color: #fff; padding: 36px 44px 32px; display: grid; grid-template-columns: 1fr 34%; gap: 24px; }
+    h1 { margin: 0; font-size: 34px; line-height: 1.06; letter-spacing: 0; }
+    .title { margin-top: 8px; font-weight: 800; opacity: .92; }
+    .contact { display: grid; gap: 7px; font-size: 12px; word-break: break-word; }
+    .body { display: grid; grid-template-columns: 1fr 31%; gap: 34px; padding: 34px 44px 42px; }
+    .side { background: #f8fafc; border: 1px solid #e5e7eb; padding: 18px; align-self: start; }
+    h2 { margin: 23px 0 10px; color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .09em; border-bottom: 2px solid color-mix(in srgb, var(--secondary) 48%, white); padding-bottom: 6px; }
+    main h2:first-child, .side h2:first-child { margin-top: 0; }
+    h3 { margin: 0 0 5px; color: var(--accent); font-size: 15px; }
+    .item { margin-bottom: 15px; }
+    ul { margin: 7px 0 0 18px; padding: 0; }
+    li { margin-bottom: 5px; }
+    .skill { display: block; background: #fff; border-left: 4px solid var(--secondary); padding: 5px 8px; margin: 0 0 7px; font-size: 12px; }
+    main .skill { display: inline-block; margin-right: 6px; border: 1px solid color-mix(in srgb, var(--secondary) 42%, white); border-left-width: 4px; }
+    .compact .item { margin-bottom: 9px; }
+    @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
+    @media (max-width: 760px) { .page { margin: 0; } header, .body { grid-template-columns: 1fr; padding: 28px; } }
+  </style>
+</head>
+<body>
+  <div class="page {{density}}">
+    <header>
+      <div>
+        <h1>{{name}}</h1>
+        <div class="title">{{title}}</div>
+      </div>
+      <div class="contact">{{contact_items}}</div>
+    </header>
+    <div class="body">
+      <main>
+        {{summary_section}}
+        {{experience_section}}
+        {{projects_section}}
+        {{awards_section}}
+      </main>
+      <aside class="side">
+        {{skills_section}}
+        {{education_section}}
+        {{certifications_section}}
+        {{languages_section}}
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

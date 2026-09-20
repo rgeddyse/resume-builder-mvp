@@ -1,0 +1,49 @@
+<!-- template:name=Executive Band; style=Polished senior-professional layout; source_note=Original local template inspired by MIT-licensed Start Bootstrap Personal color bands -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
+    * { box-sizing: border-box; }
+    body { margin: 0; {{page_background}} color: #1f2937; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 880px; min-height: 1120px; margin: 20px auto; {{paper_background}} box-shadow: 0 15px 35px rgba(15, 23, 42, .12); }
+    header { background: linear-gradient(130deg, #111827, var(--accent)); color: white; padding: 38px 46px 30px; }
+    h1 { margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: 0; }
+    .title { margin-top: 8px; font-size: 16px; font-weight: 700; color: color-mix(in srgb, var(--secondary) 25%, white); }
+    .contact { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 18px; font-size: 12px; opacity: .95; }
+    main { padding: 28px 46px 42px; }
+    h2 { display: inline-block; margin: 22px 0 11px; color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .09em; border-bottom: 4px solid var(--secondary); padding-bottom: 5px; }
+    h3 { margin: 0 0 5px; color: var(--accent); font-size: 15px; }
+    p { margin: 0; }
+    .item { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid color-mix(in srgb, var(--secondary) 38%, white); }
+    ul { margin: 7px 0 0 18px; padding: 0; }
+    li { margin-bottom: 5px; }
+    .skill { display: inline-block; background: #f1f5f9; border-left: 3px solid var(--secondary); padding: 5px 9px; margin: 0 5px 7px 0; font-size: 12px; font-weight: 700; }
+    .compact main { padding-top: 18px; }
+    .compact .item { margin-bottom: 9px; }
+    @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
+    @media (max-width: 720px) { .page { margin: 0; } header, main { padding-left: 26px; padding-right: 26px; } }
+  </style>
+</head>
+<body>
+  <div class="page {{density}}">
+    <header>
+      <h1>{{name}}</h1>
+      <div class="title">{{title}}</div>
+      <div class="contact">{{contact_items}}</div>
+    </header>
+    <main>
+      {{summary_section}}
+      {{skills_section}}
+      {{experience_section}}
+      {{projects_section}}
+      {{education_section}}
+      {{certifications_section}}
+      {{languages_section}}
+      {{awards_section}}
+    </main>
+  </div>
+</body>
+</html>

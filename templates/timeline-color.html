@@ -1,0 +1,49 @@
+<!-- template:name=Timeline Color; style=Modern project-and-experience timeline; source_note=Original local colorful template -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
+    * { box-sizing: border-box; }
+    body { margin: 0; {{page_background}} color: #172033; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.48; }
+    .page { max-width: 900px; min-height: 1120px; margin: 20px auto; {{paper_background}} padding: 38px 44px; box-shadow: 0 18px 45px rgba(15, 23, 42, .13); }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; padding-bottom: 18px; border-bottom: 1px solid #e5e7eb; }
+    h1 { margin: 0; font-size: 34px; line-height: 1.05; color: #111827; letter-spacing: 0; }
+    .title { margin-top: 8px; color: var(--accent); font-weight: 800; }
+    .contact { text-align: right; display: grid; gap: 5px; font-size: 12px; color: #475569; max-width: 275px; word-break: break-word; }
+    h2 { margin: 24px 0 12px; color: #111827; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; }
+    h2::before { content: ""; display: inline-block; width: 26px; height: 8px; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--secondary)); margin-right: 9px; }
+    h3 { margin: 0 0 5px; color: var(--accent); font-size: 15px; }
+    p { margin: 0; }
+    .item { position: relative; margin-bottom: 16px; padding: 0 0 0 22px; border-left: 2px solid color-mix(in srgb, var(--secondary) 45%, white); }
+    .item::before { content: ""; position: absolute; left: -6px; top: 3px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+    ul { margin: 7px 0 0 18px; padding: 0; }
+    li { margin-bottom: 5px; }
+    .skill { display: inline-block; border-radius: 6px; padding: 5px 9px; margin: 0 5px 7px 0; background: color-mix(in srgb, var(--secondary) 18%, white); border: 1px solid color-mix(in srgb, var(--secondary) 42%, white); font-size: 12px; }
+    .compact .item { margin-bottom: 10px; }
+    @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
+    @media (max-width: 760px) { .page { margin: 0; padding: 28px; } header { grid-template-columns: 1fr; } .contact { text-align: left; max-width: none; } }
+  </style>
+</head>
+<body>
+  <div class="page {{density}}">
+    <header>
+      <div>
+        <h1>{{name}}</h1>
+        <div class="title">{{title}}</div>
+      </div>
+      <div class="contact">{{contact_items}}</div>
+    </header>
+    {{summary_section}}
+    {{skills_section}}
+    {{experience_section}}
+    {{projects_section}}
+    {{education_section}}
+    {{certifications_section}}
+    {{languages_section}}
+    {{awards_section}}
+  </div>
+</body>
+</html>

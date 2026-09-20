@@ -1,0 +1,51 @@
+<!-- template:name=Editorial Column; style=Magazine-like split resume with soft vertical panel; source_note=Original local professional template -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
+    * { box-sizing: border-box; }
+    body { margin: 0; {{page_background}} color: #202124; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+    .page { max-width: 880px; min-height: 1120px; margin: 20px auto; {{paper_background}} box-shadow: 0 18px 42px rgba(15,23,42,.12); display: grid; grid-template-columns: 38% 1fr; }
+    .intro { padding: 42px 30px; background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 20%, white), #ffffff); border-right: 1px solid #e5e7eb; }
+    .content { padding: 42px 44px; }
+    .mark { width: 58px; height: 6px; background: var(--accent); margin-bottom: 28px; }
+    h1 { margin: 0; color: #111827; font-size: 36px; line-height: 1.02; letter-spacing: 0; }
+    .title { margin-top: 12px; font-weight: 800; color: var(--accent); }
+    .contact { display: grid; gap: 8px; margin-top: 30px; font-size: 12px; word-break: break-word; }
+    h2 { margin: 25px 0 10px; color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .1em; }
+    .intro h2 { color: var(--accent); }
+    h3 { margin: 0 0 5px; color: var(--accent); font-size: 15px; }
+    .item { margin-bottom: 15px; }
+    ul { margin: 7px 0 0 18px; padding: 0; }
+    li { margin-bottom: 5px; }
+    .skill { display: block; padding: 6px 0; border-bottom: 1px solid color-mix(in srgb, var(--secondary) 34%, white); font-size: 12px; font-weight: 700; }
+    .content .skill { display: inline-block; border: 0; background: color-mix(in srgb, var(--secondary) 16%, white); border-radius: 999px; padding: 5px 10px; margin: 0 5px 7px 0; }
+    .compact .item { margin-bottom: 9px; }
+    @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
+    @media (max-width: 760px) { .page { grid-template-columns: 1fr; margin: 0; } .intro, .content { padding: 28px; } }
+  </style>
+</head>
+<body>
+  <div class="page {{density}}">
+    <aside class="intro">
+      <div class="mark"></div>
+      <h1>{{name}}</h1>
+      <div class="title">{{title}}</div>
+      <div class="contact">{{contact_items}}</div>
+      {{skills_section}}
+      {{education_section}}
+      {{languages_section}}
+    </aside>
+    <main class="content">
+      {{summary_section}}
+      {{experience_section}}
+      {{projects_section}}
+      {{certifications_section}}
+      {{awards_section}}
+    </main>
+  </div>
+</body>
+</html>
