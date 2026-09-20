@@ -67,3 +67,4 @@ now, the app allows direct HTML export so templates and resume parsing can be te
 5. AI bullet rewriting with measurable impact
 6. Version history, saved resumes, authentication, and deployment
 # resume-builder-mvp
+# resume-builder-mvp
