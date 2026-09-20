@@ -4,6 +4,7 @@ import json
 import os
 from io import BytesIO
 from pathlib import Path
+from typing import Dict, List, Any, Optional
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -22,37 +23,575 @@ except ImportError:
 BASE_DIR = Path(__file__).parent
 TEMPLATE_DIR = BASE_DIR / "templates"
 
+# Component-based resume data structure
+RESUME_COMPONENTS = {
+    "header": {
+        "name": "",
+        "title": "",
+        "contact": {
+            "email": "",
+            "phone": "",
+            "location": "",
+            "linkedin": "",
+            "github": "",
+            "portfolio": ""
+        },
+        "profile_photo": None
+    },
+    "summary": {
+        "content": "",
+        "max_length": 300
+    },
+    "skills": {
+        "technical": [],
+        "soft": [],
+        "languages": []
+    },
+    "experience": [
+        {
+            "company": "",
+            "role": "",
+            "dates": "",
+            "location": "",
+            "bullets": []
+        }
+    ],
+    "education": [
+        {
+            "institution": "",
+            "degree": "",
+            "dates": "",
+            "location": "",
+            "gpa": ""
+        }
+    ],
+    "projects": [
+        {
+            "name": "",
+            "description": "",
+            "technologies": [],
+            "dates": ""
+        }
+    ],
+    "certifications": [
+        {
+            "name": "",
+            "issuer": "",
+            "date": ""
+        }
+    ],
+    "languages": [],
+    "awards": []
+}
+
+# Layout area definitions (visual drag-and-drop targets)
+LAYOUT_AREAS = {
+    "header": {
+        "name": "Header Area",
+        "description": "Top section with name, title, and contact info",
+        "max_components": 3,
+        "suggested_components": ["name", "title", "contact"]
+    },
+    "sidebar": {
+        "name": "Sidebar",
+        "description": "Left or right column for skills, languages, contact",
+        "max_components": 4,
+        "suggested_components": ["skills", "languages", "contact", "certifications"]
+    },
+    "main_content": {
+        "name": "Main Content",
+        "description": "Primary area for experience, projects, education",
+        "max_components": 6,
+        "suggested_components": ["summary", "experience", "projects", "education"]
+    },
+    "footer": {
+        "name": "Footer",
+        "description": "Bottom section for awards, additional info",
+        "max_components": 2,
+        "suggested_components": ["awards", "languages"]
+    }
+}
+
+# Available components that can be placed in layout areas
+AVAILABLE_COMPONENTS = {
+    "name": {"name": "Name", "icon": "👤", "type": "text"},
+    "title": {"name": "Job Title", "icon": "💼", "type": "text"},
+    "contact": {"name": "Contact Info", "icon": "📞", "type": "text"},
+    "summary": {"name": "Summary", "icon": "📝", "type": "long_text"},
+    "skills": {"name": "Skills", "icon": "🛠️", "type": "list"},
+    "experience": {"name": "Experience", "icon": "💻", "type": "long_list"},
+    "education": {"name": "Education", "icon": "🎓", "type": "list"},
+    "projects": {"name": "Projects", "icon": "🚀", "type": "list"},
+    "certifications": {"name": "Certifications", "icon": "📜", "type": "list"},
+    "languages": {"name": "Languages", "icon": "🌍", "type": "list"},
+    "awards": {"name": "Awards", "icon": "🏆", "type": "list"}
+}
+
+# Layout structure definition
+LAYOUT_STRUCTURE = {
+    "sidebar_left": {
+        "name": "Sidebar Left",
+        "areas": ["sidebar", "main_content"],
+        "sidebar_position": "left",
+        "sidebar_width": "30%"
+    },
+    "sidebar_right": {
+        "name": "Sidebar Right", 
+        "areas": ["main_content", "sidebar"],
+        "sidebar_position": "right",
+        "sidebar_width": "30%"
+    },
+    "single_column": {
+        "name": "Single Column",
+        "areas": ["header", "main_content", "footer"],
+        "sidebar_position": None,
+        "sidebar_width": None
+    },
+    "three_column": {
+        "name": "Three Column",
+        "areas": ["header", "sidebar", "main_content", "footer"],
+        "sidebar_position": "left",
+        "sidebar_width": "25%"
+    }
+}
+
 st.set_page_config(page_title="Resume Builder + ATS Checker", page_icon="📄", layout="wide")
+
+
+def render_drag_drop_layout_editor():
+    """Render a visual drag-and-drop style layout editor"""
+    st.subheader("🎨 Custom Layout Editor")
+    st.markdown("Drag and drop components to different layout areas to customize your resume layout")
+    
+    # Initialize custom layout if not exists
+    if "custom_layout" not in st.session_state:
+        st.session_state.custom_layout = {
+            "header": ["name", "title", "contact"],
+            "sidebar": ["skills", "languages"],
+            "main_content": ["summary", "experience", "projects", "education"],
+            "footer": ["awards", "certifications"]
+        }
+    
+    # Select layout structure
+    structure = st.selectbox(
+        "Layout Structure",
+        options=list(LAYOUT_STRUCTURE.keys()),
+        format_func=lambda x: LAYOUT_STRUCTURE[x]["name"],
+        index=list(LAYOUT_STRUCTURE.keys()).index(st.session_state.get("selected_structure", "sidebar_left"))
+    )
+    st.session_state.selected_structure = structure
+    
+    structure_info = LAYOUT_STRUCTURE[structure]
+    st.info(f"**{structure_info['name']}**: {', '.join(structure_info['areas'])}")
+    
+    # Layout editor
+    col1, col2 = st.columns([1, 1])
+    
+    with col1:
+        st.markdown("### 📦 Available Components")
+        st.markdown("Components you can add to your layout")
+        
+        # Show available components
+        available_components = []
+        used_components = []
+        for area_components in st.session_state.custom_layout.values():
+            used_components.extend(area_components)
+        
+        for comp_key, comp_info in AVAILABLE_COMPONENTS.items():
+            if comp_key not in used_components:
+                available_components.append(comp_key)
+        
+        if available_components:
+            for comp_key in available_components:
+                comp_info = AVAILABLE_COMPONENTS[comp_key]
+                with st.container():
+                    cols = st.columns([1, 3, 1])
+                    cols[0].markdown(f"{comp_info['icon']}")
+                    cols[1].markdown(f"**{comp_info['name']}**")
+                    if cols[2].button("Add", key=f"add_{comp_key}", use_container_width=True):
+                        # Add to first available area
+                        for area in structure_info["areas"]:
+                            if len(st.session_state.custom_layout[area]) < LAYOUT_AREAS[area]["max_components"]:
+                                st.session_state.custom_layout[area].append(comp_key)
+                                st.rerun()
+                                break
+        else:
+            st.info("All components are already placed in the layout")
+    
+    with col2:
+        st.markdown("### 📋 Layout Areas")
+        st.markdown("Arrange components in different areas")
+        
+        # Show layout areas with their components
+        for area in structure_info["areas"]:
+            area_info = LAYOUT_AREAS[area]
+            with st.expander(f"{area_info['name']}", expanded=True):
+                st.caption(area_info['description'])
+                st.caption(f"Max components: {area_info['max_components']}")
+                
+                # Show components in this area
+                current_components = st.session_state.custom_layout.get(area, [])
+                
+                if current_components:
+                    for i, comp_key in enumerate(current_components):
+                        comp_info = AVAILABLE_COMPONENTS[comp_key]
+                        cols = st.columns([1, 3, 1, 1])
+                        cols[0].markdown(f"{comp_info['icon']}")
+                        cols[1].markdown(f"**{comp_info['name']}**")
+                        
+                        # Move up button
+                        if i > 0 and cols[2].button("↑", key=f"up_{area}_{i}", use_container_width=True):
+                            current_components[i], current_components[i-1] = current_components[i-1], current_components[i]
+                            st.session_state.custom_layout[area] = current_components
+                            st.rerun()
+                        
+                        # Move down button
+                        if i < len(current_components) - 1 and cols[3].button("↓", key=f"down_{area}_{i}", use_container_width=True):
+                            current_components[i], current_components[i+1] = current_components[i+1], current_components[i]
+                            st.session_state.custom_layout[area] = current_components
+                            st.rerun()
+                    
+                    # Remove button for last component
+                    if st.button(f"Remove Last from {area_info['name']}", key=f"remove_{area}", use_container_width=True):
+                        if current_components:
+                            current_components.pop()
+                            st.session_state.custom_layout[area] = current_components
+                            st.rerun()
+                else:
+                    st.info(f"No components in {area_info['name']}")
+    
+    # Quick layout presets
+    st.markdown("### ⚡ Quick Layout Presets")
+    preset_col1, preset_col2, preset_col3, preset_col4 = st.columns(4)
+    
+    presets = {
+        "Classic": {
+            "header": ["name", "title", "contact"],
+            "sidebar": [],
+            "main_content": ["summary", "experience", "education", "skills", "projects"],
+            "footer": ["awards", "certifications"]
+        },
+        "Modern Split": {
+            "header": ["name", "title"],
+            "sidebar": ["contact", "skills", "languages"],
+            "main_content": ["summary", "experience", "projects", "education"],
+            "footer": ["awards", "certifications"]
+        },
+        "Minimal": {
+            "header": ["name", "title", "contact"],
+            "sidebar": [],
+            "main_content": ["summary", "experience", "education"],
+            "footer": []
+        },
+        "Compact": {
+            "header": ["name", "title"],
+            "sidebar": ["contact", "skills"],
+            "main_content": ["summary", "experience", "education"],
+            "footer": []
+        }
+    }
+    
+    with preset_col1:
+        if st.button("Classic", use_container_width=True):
+            st.session_state.custom_layout = presets["Classic"]
+            st.session_state.selected_structure = "single_column"
+            st.rerun()
+    
+    with preset_col2:
+        if st.button("Modern Split", use_container_width=True):
+            st.session_state.custom_layout = presets["Modern Split"]
+            st.session_state.selected_structure = "sidebar_left"
+            st.rerun()
+    
+    with preset_col3:
+        if st.button("Minimal", use_container_width=True):
+            st.session_state.custom_layout = presets["Minimal"]
+            st.session_state.selected_structure = "single_column"
+            st.rerun()
+    
+    with preset_col4:
+        if st.button("Compact", use_container_width=True):
+            st.session_state.custom_layout = presets["Compact"]
+            st.session_state.selected_structure = "sidebar_left"
+            st.rerun()
+    
+    # Preview current layout
+    st.markdown("### 👁️ Layout Preview")
+    render_layout_preview(st.session_state.custom_layout, structure)
+
+
+def render_layout_preview(custom_layout, structure):
+    """Render a visual preview of the custom layout"""
+    structure_info = LAYOUT_STRUCTURE[structure]
+    
+    # Create HTML preview
+    preview_html = f"""
+    <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 20px; background: #f8fafc;">
+        <h3 style="margin-top: 0; color: #1e293b;">Layout Preview: {structure_info['name']}</h3>
+    """
+    
+    # Render each area based on structure
+    if structure_info["sidebar_position"] == "left":
+        # Sidebar on left
+        sidebar_width = structure_info["sidebar_width"]
+        preview_html += f"""
+        <div style="display: grid; grid-template-columns: {sidebar_width} 1fr; gap: 20px; margin-top: 20px;">
+        """
+        
+        # Sidebar
+        if "sidebar" in structure_info["areas"]:
+            preview_html += render_area_preview("sidebar", custom_layout.get("sidebar", []))
+        
+        # Main content
+        if "main_content" in structure_info["areas"]:
+            preview_html += render_area_preview("main_content", custom_layout.get("main_content", []))
+        
+        preview_html += "</div>"
+        
+        # Header and footer
+        if "header" in structure_info["areas"]:
+            preview_html = render_area_preview("header", custom_layout.get("header", [])) + preview_html
+        if "footer" in structure_info["areas"]:
+            preview_html += render_area_preview("footer", custom_layout.get("footer", []))
+            
+    elif structure_info["sidebar_position"] == "right":
+        # Sidebar on right
+        sidebar_width = structure_info["sidebar_width"]
+        preview_html += f"""
+        <div style="display: grid; grid-template-columns: 1fr {sidebar_width}; gap: 20px; margin-top: 20px;">
+        """
+        
+        # Main content
+        if "main_content" in structure_info["areas"]:
+            preview_html += render_area_preview("main_content", custom_layout.get("main_content", []))
+        
+        # Sidebar
+        if "sidebar" in structure_info["areas"]:
+            preview_html += render_area_preview("sidebar", custom_layout.get("sidebar", []))
+        
+        preview_html += "</div>"
+        
+        # Header and footer
+        if "header" in structure_info["areas"]:
+            preview_html = render_area_preview("header", custom_layout.get("header", [])) + preview_html
+        if "footer" in structure_info["areas"]:
+            preview_html += render_area_preview("footer", custom_layout.get("footer", []))
+            
+    else:
+        # Single column
+        preview_html += '<div style="margin-top: 20px;">'
+        
+        for area in structure_info["areas"]:
+            preview_html += render_area_preview(area, custom_layout.get(area, []))
+        
+        preview_html += '</div>'
+    
+    preview_html += "</div>"
+    
+    st.components.v1.html(preview_html, height=400, scrolling=True)
+
+
+def render_area_preview(area_name, components):
+    """Render a single area preview"""
+    area_info = LAYOUT_AREAS[area_name]
+    
+    html = f"""
+    <div style="background: white; border: 2px dashed #94a3b8; border-radius: 6px; padding: 15px; margin-bottom: 15px;">
+        <h4 style="margin: 0 0 10px 0; color: #475569; font-size: 14px;">{area_info['name']}</h4>
+    """
+    
+    if components:
+        html += '<div style="display: flex; flex-wrap: wrap; gap: 8px;">'
+        for comp_key in components:
+            comp_info = AVAILABLE_COMPONENTS[comp_key]
+            html += f"""
+            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 4px; padding: 6px 12px; font-size: 12px; color: #1e40af;">
+                {comp_info['icon']} {comp_info['name']}
+            </div>
+            """
+        html += '</div>'
+    else:
+        html += '<div style="color: #94a3b8; font-style: italic; font-size: 12px;">Empty - drag components here</div>'
+    
+    html += '</div>'
+    return html
+
+
+def render_custom_layout_html(custom_layout, structure, data, theme):
+    """Render the actual HTML based on custom layout"""
+    structure_info = LAYOUT_STRUCTURE[structure]
+    
+    # Get component data
+    component_data = {
+        "name": data.get("name", ""),
+        "title": data.get("title", ""),
+        "contact": f"{data.get('email', '')} | {data.get('phone', '')} | {data.get('location', '')}",
+        "summary": data.get("summary", ""),
+        "skills": data.get("skills", ""),
+        "experience": data.get("experience", ""),
+        "education": data.get("education", ""),
+        "projects": data.get("projects", ""),
+        "certifications": data.get("certifications", ""),
+        "languages": data.get("languages", ""),
+        "awards": data.get("awards", "")
+    }
+    
+    # Build HTML based on structure
+    html_parts = []
+    
+    if structure_info["sidebar_position"] == "left":
+        # Grid layout with sidebar on left
+        html_parts.append(f'<div style="display: grid; grid-template-columns: {structure_info["sidebar_width"]} 1fr; gap: 20px; min-height: 1120px; {theme.get("paper_background", "background: white;")} padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">')
+        
+        # Sidebar column
+        html_parts.append('<div style="padding-right: 20px;">')
+        for comp_key in custom_layout.get("sidebar", []):
+            html_parts.append(render_component_html(comp_key, component_data, theme))
+        html_parts.append('</div>')
+        
+        # Main content column
+        html_parts.append('<div style="padding-left: 20px;">')
+        for comp_key in custom_layout.get("main_content", []):
+            html_parts.append(render_component_html(comp_key, component_data, theme))
+        html_parts.append('</div>')
+        
+        html_parts.append('</div>')
+        
+    elif structure_info["sidebar_position"] == "right":
+        # Grid layout with sidebar on right
+        html_parts.append(f'<div style="display: grid; grid-template-columns: 1fr {structure_info["sidebar_width"]}; gap: 20px; min-height: 1120px; {theme.get("paper_background", "background: white;")} padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">')
+        
+        # Main content column
+        html_parts.append('<div style="padding-right: 20px;">')
+        for comp_key in custom_layout.get("main_content", []):
+            html_parts.append(render_component_html(comp_key, component_data, theme))
+        html_parts.append('</div>')
+        
+        # Sidebar column
+        html_parts.append('<div style="padding-left: 20px;">')
+        for comp_key in custom_layout.get("sidebar", []):
+            html_parts.append(render_component_html(comp_key, component_data, theme))
+        html_parts.append('</div>')
+        
+        html_parts.append('</div>')
+        
+    else:
+        # Single column
+        html_parts.append(f'<div style="min-height: 1120px; {theme.get("paper_background", "background: white;")} padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">')
+        
+        for area in structure_info["areas"]:
+            for comp_key in custom_layout.get(area, []):
+                html_parts.append(render_component_html(comp_key, component_data, theme))
+        
+        html_parts.append('</div>')
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {{ font-family: {theme.get('font', 'Arial')}; margin: 0; {theme.get('page_background', 'background: #f8fafc;')} }}
+            .component {{ margin-bottom: 25px; }}
+            .component-title {{ font-size: 18px; font-weight: bold; color: {theme.get('accent', '#2563eb')}; border-bottom: 2px solid {theme.get('accent', '#2563eb')}; padding-bottom: 8px; margin-bottom: 12px; }}
+            .component-content {{ line-height: 1.6; }}
+        </style>
+    </head>
+    <body>
+        {''.join(html_parts)}
+    </body>
+    </html>
+    """
+
+
+def render_component_html(comp_key, component_data, theme):
+    """Render HTML for a single component"""
+    data = component_data.get(comp_key, "")
+    comp_info = AVAILABLE_COMPONENTS[comp_key]
+    
+    if not data:
+        return ""
+    
+    # Convert newlines to breaks outside of f-string
+    data_html = data.replace('\n', '<br>')
+    
+    return f"""
+    <div class="component">
+        <div class="component-title">{comp_info['icon']} {comp_info['name']}</div>
+        <div class="component-content">
+            {data_html}
+        </div>
+    </div>
+    """
 
 
 defaults = {
     "name": "Aarav Krishnan",
-    "title": "Senior Python Engineer | AI/ML Integration | Automation",
+    "title": "Senior Software Engineer",
     "email": "aarav.krishnan@example.com",
     "phone": "+1 (555) 123-4567",
     "location": "San Francisco, CA",
     "linkedin": "linkedin.com/in/aarav-krishnan",
     "github": "github.com/aarav-krishnan",
     "portfolio": "aarav-krishnan.dev",
+    "summary": "Results-driven Senior Software Engineer with 8+ years of experience in building scalable web applications and leading cross-functional teams. Expertise in full-stack development, cloud architecture, and agile methodologies. Passionate about creating elegant solutions to complex problems and mentoring junior developers.",
+    "skills": "Python, JavaScript, React, Node.js, AWS, Docker, Kubernetes, PostgreSQL, MongoDB, CI/CD, Agile, Team Leadership, Problem Solving, Communication",
+    "experience": """Tech Company
+Senior Software Engineer
+2020 - Present
+Led development of microservices architecture serving 1M+ users
+Implemented CI/CD pipelines reducing deployment time by 60%
+Mentored team of 5 junior developers
+
+Innovation Corp
+Software Engineer
+2017 - 2020
+Developed RESTful APIs for e-commerce platform
+Optimized database queries improving performance by 40%
+Collaborated with UX team to improve user experience""",
+    "projects": """E-Commerce Platform
+Built full-stack marketplace using React and Node.js
+Implemented payment processing and inventory management
+Achieved 99.9% uptime and 2-second response times
+
+AI Dashboard
+Created real-time analytics dashboard using Python and D3.js
+Integrated machine learning models for predictive insights
+Reduced reporting time from hours to minutes""",
+    "education": """Stanford University
+Master of Science in Computer Science
+2015 - 2017
+Specialization in Machine Learning and Distributed Systems
+
+University of California, Berkeley
+Bachelor of Science in Computer Science
+2011 - 2015
+Graduated with Honors""",
+    "certifications": "AWS Solutions Architect Professional\nGoogle Cloud Professional Data Engineer\nCertified Kubernetes Administrator",
+    "languages": "English (Professional), Hindi (Native), Spanish (Basic)",
+    "awards": "Employee of the Year 2022\nInnovation Award 2021\nBest Project Award 2019",
     "profile_photo": None,
     "photo_size": 80,
     "photo_shape": "circle",
     "photo_border": "none",
     "photo_zoom": 100,
+    "layout_category": "standard",
+    "layout_name": "classic_single",
+    "custom_layout": {
+        "header": ["name", "title", "contact"],
+        "sidebar": ["skills", "languages"],
+        "main_content": ["summary", "experience", "projects", "education"],
+        "footer": ["awards", "certifications"]
+    },
+    "selected_structure": "sidebar_left",
+    "use_custom_layout": False,
     "target_company": "",
     "target_position": "",
     "required_skills": "",
     "generated_cover_letter": "",
     "interview_type": "Technical",
-    "company_research": "",
-    "summary": "Senior automation engineer with 15+ years of experience building Python automation, CI/CD, OS validation and AI-accelerated testing solutions.",
-    "skills": "Python, Playwright, Selenium, Pytest, BDD, GitHub Actions, Jenkins, Docker, Kubernetes, Linux, QEMU, AI/ML",
-    "experience": "Senior Principal Engineer — Tech Company\nSan Francisco, CA | 2025 – Present\nArchitected E2E automation frameworks and integrated AI-assisted engineering workflows.\n\nSenior Automation Engineer\nCompany | Location | Dates\nBuilt scalable automation frameworks, CI/CD pipelines and system validation solutions.",
-    "projects": "AI-Accelerated Automation Framework\nPython-based E2E framework integrating AI agents, device control and validation.\n\nOS Provisioning & Validation\nAutomated ISO/RAW image provisioning, PXE workflows and system-level validation.",
-    "education": "Bachelor's Degree — Computer Science / Engineering",
-    "certifications": "Certification Name — Issuer | Year",
-    "languages": "English (Professional), Hindi (Native)",
-    "awards": "Optional award, publication, volunteer work, or professional membership",
+    "company_research": ""
 }
 
 
@@ -1252,6 +1791,13 @@ with editor:
         selected_template = next(item for item in templates if item["name"] == selected_name)
         st.caption(f"{selected_template['style']} | Source: {selected_template['source_note']}")
 
+        # NEW: Drag-and-Drop Layout Editor
+        st.markdown("---")
+        render_drag_drop_layout_editor()
+        
+        # Toggle between custom layout and traditional template
+        use_custom_layout = st.toggle("Use Custom Layout Instead of Template", value=st.session_state.get("use_custom_layout", False), key="use_custom_layout_toggle", help="Use your custom component layout instead of the selected template")
+
         st.subheader("Color System")
         st.selectbox("Palette", list(palettes), key="palette", on_change=apply_palette)
         color_one, color_two = st.columns(2)
@@ -1371,8 +1917,15 @@ theme = {
     "paper_background": background["paper_background"],
     "texture_name": background_texture,
 }
-selected_source = custom_source if custom_source else selected_template["source_html"]
-rendered_html = render_template(selected_source, data, theme)
+
+# Use custom layout or traditional template
+if st.session_state.get("use_custom_layout", False):
+    custom_layout = st.session_state.get("custom_layout", {})
+    structure = st.session_state.get("selected_structure", "sidebar_left")
+    rendered_html = render_custom_layout_html(custom_layout, structure, data, theme)
+else:
+    selected_source = custom_source if custom_source else selected_template["source_html"]
+    rendered_html = render_template(selected_source, data, theme)
 
 with preview:
     top_row, action_row = st.columns([1, 1])
@@ -1410,9 +1963,43 @@ with preview:
     st.markdown("### Live Preview")
     st.markdown("This shows how your resume will look when exported:")
     
+    # Inject CSS to ensure the preview renders at full template width
+    # This overrides iframe constraints to match downloaded HTML exactly
+    preview_css = """
+    <style>
+        body, html {
+            min-width: 1200px !important;
+            overflow-x: auto !important;
+        }
+    </style>
+    """
+    
+    # Inject CSS at the beginning of the HTML
+    if rendered_html.startswith("<!DOCTYPE html>") or rendered_html.startswith("<html"):
+        # Full HTML document - inject CSS in head
+        if "<head>" in rendered_html:
+            wrapped_html = rendered_html.replace("<head>", f"<head>{preview_css}")
+        else:
+            wrapped_html = preview_css + rendered_html
+    else:
+        # HTML fragment - wrap with full document
+        wrapped_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            {preview_css}
+        </head>
+        <body>
+            {rendered_html}
+        </body>
+        </html>
+        """
+    
     # Render the HTML with proper dimensions to maintain layout
     components.html(
-        rendered_html,
+        wrapped_html,
         height=1200,
         scrolling=True
     )
