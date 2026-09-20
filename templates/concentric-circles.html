@@ -8,7 +8,7 @@
     :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
     * { box-sizing: border-box; }
     body { margin: 0; {{page_background}} color: #1f2937; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 870px; min-height: 1120px; margin: 20px auto; {{paper_background}} box-shadow: 0 18px 42px rgba(15, 23, 42, .12); padding: 42px 48px; position: relative; overflow: hidden; }
+    .page { width: 870px; min-height: 1120px; margin: 20px auto; {{paper_background}} box-shadow: 0 18px 42px rgba(15, 23, 42, .12); padding: 42px 48px; position: relative; overflow: hidden; }
     .corner-decoration { position: absolute; width: 120px; height: 120px; border-radius: 50%; opacity: .15; pointer-events: none; }
     .corner-decoration::before, .corner-decoration::after { content: ""; position: absolute; border-radius: 50%; border: 2px solid var(--accent); }
     .corner-decoration::before { width: 40px; height: 40px; top: 20px; left: 20px; }

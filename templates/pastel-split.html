@@ -8,11 +8,11 @@
     :root { --accent: {{accent}}; --secondary: {{secondary}}; --font: {{font}}; }
     * { box-sizing: border-box; }
     body { margin: 0; {{page_background}} color: #1f2937; font-family: var(--font), Arial, sans-serif; font-size: 14px; line-height: 1.5; }
-    .page { max-width: 900px; min-height: 1120px; margin: 20px auto; {{paper_background}} display: grid; grid-template-columns: 35% 1fr; box-shadow: 0 20px 45px rgba(15, 23, 42, .12); }
-    .rail { background: color-mix(in srgb, var(--secondary) 18%, white); padding: 38px 28px; border-right: 1px solid color-mix(in srgb, var(--accent) 18%, white); }
-    .main { padding: 38px 44px 44px; }
+    .page { width: 900px; min-height: 1120px; margin: 20px auto; {{paper_background}} display: grid; grid-template-columns: 35% 1fr; box-shadow: 0 20px 45px rgba(15, 23, 42, .12); overflow: hidden; }
+    .rail { background: color-mix(in srgb, var(--secondary) 18%, white); padding: 38px 28px; border-right: 1px solid color-mix(in srgb, var(--accent) 18%, white); min-width: 0; }
+    .main { padding: 38px 44px 44px; min-width: 0; }
     .avatar { min-width: 74px; min-height: 74px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--secondary)); margin: 0 auto 20px; box-shadow: inset 0 0 0 9px rgba(255,255,255,.72); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .profile-photo { width: 100%; height: 100%; object-fit: cover; }
+    .profile-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
     h1 { margin: 0; font-size: 32px; line-height: 1.05; letter-spacing: 0; color: #111827; }
     .title { margin-top: 8px; color: var(--accent); font-weight: 800; }
     h2 { color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .09em; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid color-mix(in srgb, var(--secondary) 42%, white); }

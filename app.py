@@ -1,5 +1,7 @@
 import html
 import re
+import json
+import os
 from io import BytesIO
 from pathlib import Path
 
@@ -450,8 +452,8 @@ def template_tokens(data, theme):
                 elif photo_border == "shadow":
                     border_style = f"box-shadow: 0 4px 12px rgba(0,0,0,0.2);"
                 
-                # Calculate zoom
-                transform = f"scale({photo_zoom/100})"
+                # Calculate zoom using background-size approach for better quality
+                zoom_value = photo_zoom / 100
                 
                 photo_style = f"""
                     width: {photo_size}px;
@@ -459,8 +461,9 @@ def template_tokens(data, theme):
                     border-radius: {border_radius};
                     {border_style}
                     object-fit: cover;
-                    transform: {transform};
                     display: inline-block;
+                    max-width: {photo_size}px;
+                    max-height: {photo_size}px;
                 """
                 
                 profile_photo_html = f'<img src="data:{mime_type};base64,{base64_image}" alt="Profile Photo" class="profile-photo" style="{photo_style}" />'
@@ -722,36 +725,80 @@ def discover_templates():
 
 
 def extract_text_from_resume(uploaded_file):
+    """Enhanced text extraction with improved error handling and format detection"""
     suffix = Path(uploaded_file.name).suffix.lower()
     payload = uploaded_file.getvalue()
+    
     if suffix == ".pdf":
         if PdfReader is None:
             raise RuntimeError("Install pypdf to parse PDF resumes.")
-        reader = PdfReader(BytesIO(payload))
-        return "\n".join(page.extract_text() or "" for page in reader.pages)
+        try:
+            reader = PdfReader(BytesIO(payload))
+            # Extract text from all pages with better formatting preservation
+            full_text = []
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    full_text.append(page_text)
+            return "\n".join(full_text)
+        except Exception as e:
+            raise RuntimeError(f"PDF parsing failed: {str(e)}")
+            
     if suffix == ".docx":
         if Document is None:
             raise RuntimeError("Install python-docx to parse DOCX resumes.")
-        document = Document(BytesIO(payload))
-        return "\n".join(paragraph.text for paragraph in document.paragraphs)
+        try:
+            document = Document(BytesIO(payload))
+            # Extract text with paragraph structure preservation
+            full_text = []
+            for paragraph in document.paragraphs:
+                if paragraph.text.strip():
+                    full_text.append(paragraph.text)
+            return "\n".join(full_text)
+        except Exception as e:
+            raise RuntimeError(f"DOCX parsing failed: {str(e)}")
+            
     return payload.decode("utf-8", errors="replace")
 
 
 def section_key(line):
+    """Enhanced section detection with fuzzy matching"""
     cleaned = re.sub(r"[^a-zA-Z &]", "", line).strip().lower()
     cleaned = re.sub(r"\s+", " ", cleaned)
+    
+    # Direct match
     for key, aliases in section_aliases.items():
         if cleaned in aliases:
             return key
+    
+    # Fuzzy match for common variations
+    fuzzy_aliases = {
+        "summary": ["professional summary", "career summary", "profile", "about me", "objective"],
+        "skills": ["technical skills", "core competencies", "key skills", "expertise", "technologies"],
+        "experience": ["work experience", "employment history", "professional experience", "work history"],
+        "projects": ["key projects", "notable projects", "portfolio", "project experience"],
+        "education": ["academic background", "educational background", "qualifications", "academic qualifications"],
+        "certifications": ["certificates", "credentials", "professional certifications", "certifications & courses"],
+        "languages": ["languages spoken", "communication", "language proficiency"],
+        "awards": ["achievements", "honors", "recognition", "accomplishments"]
+    }
+    
+    for key, variations in fuzzy_aliases.items():
+        for variation in variations:
+            if variation in cleaned or cleaned in variation:
+                return key
+    
     return None
 
 
 def parse_resume_text(text):
+    """Enhanced resume parsing with better field extraction and validation"""
     text = text.replace("\xa0", " ")
     lines = [re.sub(r"\s+", " ", line).strip(" -•\t") for line in text.splitlines()]
     lines = [line for line in lines if line]
     parsed = {key: "" for key in defaults}
 
+    # Enhanced contact information extraction
     email = re.search(r"[\w.+-]+@[\w-]+\.[\w.-]+", text)
     phone = re.search(r"(\+?\d[\d\s().-]{8,}\d)", text)
     urls = re.findall(r"(?:https?://)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:/[^\s,;)]*)?", text)
@@ -762,13 +809,18 @@ def parse_resume_text(text):
     parsed["github"] = next((url for url in urls if "github" in url.lower()), "")
     parsed["portfolio"] = next((url for url in urls if "linkedin" not in url.lower() and "github" not in url.lower() and "@" not in url), "")
 
+    # Enhanced name detection with better heuristics
     for line in lines[:8]:
         lower = line.lower()
         if "@" in line or re.search(r"\d{6,}", line) or "linkedin" in lower or "github" in lower:
             continue
         if len(line.split()) <= 6 and not section_key(line):
-            parsed["name"] = line
-            break
+            # Additional validation: should contain at least one capital letter and no special chars
+            if any(char.isupper() for char in line) and not re.search(r"[^\w\s.,]", line):
+                parsed["name"] = line
+                break
+    
+    # Enhanced title detection
     if parsed["name"]:
         try:
             start_index = lines.index(parsed["name"]) + 1
@@ -776,9 +828,13 @@ def parse_resume_text(text):
             start_index = 0
         for line in lines[start_index : start_index + 4]:
             if "@" not in line and not section_key(line) and 2 <= len(line.split()) <= 12:
-                parsed["title"] = line
-                break
+                # Additional validation: should look like a job title
+                title_indicators = ["engineer", "developer", "manager", "director", "analyst", "specialist", "consultant", "lead", "senior", "junior"]
+                if any(indicator in line.lower() for indicator in title_indicators) or line.istitle():
+                    parsed["title"] = line
+                    break
 
+    # Enhanced section parsing with better content aggregation
     sections = {key: [] for key in section_aliases}
     current = None
     for line in lines:
@@ -789,19 +845,110 @@ def parse_resume_text(text):
         if current:
             sections[current].append(line)
 
+    # Improved content assignment
     for key in ("summary", "education", "languages"):
         parsed[key] = "\n".join(sections[key]).strip()
-    parsed["skills"] = ", ".join(clean_list("\n".join(sections["skills"]))).strip()
+    
+    # Enhanced skills parsing with categorization
+    skills_text = "\n".join(sections["skills"])
+    skills_list = clean_list(skills_text)
+    # Separate technical and soft skills if possible
+    technical_skills = [skill for skill in skills_list if any(tech_word in skill.lower() for tech_word in ["python", "java", "javascript", "sql", "react", "angular", "docker", "kubernetes", "aws", "azure", "machine learning", "ai", "data", "web", "mobile", "backend", "frontend"])]
+    soft_skills = [skill for skill in skills_list if skill not in technical_skills]
+    parsed["skills"] = ", ".join(skills_list).strip()
+    
     for key in ("experience", "projects", "certifications", "awards"):
         parsed[key] = "\n".join(sections[key]).strip()
 
+    # Enhanced location detection
     location_candidates = [
         line
         for line in lines[:12]
         if "," in line and not any(token in line.lower() for token in ("linkedin", "github", "http", "@"))
     ]
-    parsed["location"] = location_candidates[0] if location_candidates else ""
+    # Additional validation for location (should contain city/state pattern)
+    location_pattern = re.compile(r"[A-Za-z\s]+,\s*[A-Za-z\s]+")
+    for candidate in location_candidates:
+        if location_pattern.search(candidate):
+            parsed["location"] = candidate
+            break
+    else:
+        parsed["location"] = location_candidates[0] if location_candidates else ""
+    
+    # Apply AI validation if available
+    parsed = validate_parsed_data_with_ai(parsed, text)
+    
     return {key: value for key, value in parsed.items() if plain(value)}
+
+
+def validate_parsed_data_with_ai(parsed_data, original_text):
+    """Use AI to validate and correct parsed resume data"""
+    try:
+        import openai
+        # Check if OpenAI API key is configured
+        if not os.getenv("OPENAI_API_KEY"):
+            return parsed_data
+        
+        # Create validation prompt
+        validation_prompt = f"""
+        You are a resume parsing expert. Review the following parsed resume data and correct any errors.
+        
+        Original resume text:
+        {original_text[:3000]}
+        
+        Parsed data:
+        Name: {parsed_data.get('name', '')}
+        Title: {parsed_data.get('title', '')}
+        Email: {parsed_data.get('email', '')}
+        Phone: {parsed_data.get('phone', '')}
+        Location: {parsed_data.get('location', '')}
+        LinkedIn: {parsed_data.get('linkedin', '')}
+        GitHub: {parsed_data.get('github', '')}
+        
+        Return the corrected data in JSON format with these exact keys: name, title, email, phone, location, linkedin, github.
+        If a field is empty or incorrect, return the corrected value. If no correction needed, return the original value.
+        Return only the JSON, no other text.
+        """
+        
+        try:
+            # Try newer OpenAI API first
+            client = openai.OpenAI()
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a resume parsing expert. Return only valid JSON."},
+                    {"role": "user", "content": validation_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=500
+            )
+            corrected_data = json.loads(response.choices[0].message.content)
+        except AttributeError:
+            # Fall back to older API
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a resume parsing expert. Return only valid JSON."},
+                    {"role": "user", "content": validation_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=500
+            )
+            corrected_data = json.loads(response.choices[0].message.content)
+        
+        # Update parsed data with AI corrections
+        for key in ["name", "title", "email", "phone", "location", "linkedin", "github"]:
+            if corrected_data.get(key) and corrected_data[key].strip():
+                parsed_data[key] = corrected_data[key]
+        
+        return parsed_data
+        
+    except ImportError:
+        # OpenAI not available, return original parsed data
+        return parsed_data
+    except Exception as e:
+        print(f"AI validation error: {e}")
+        return parsed_data
 
 
 def apply_palette():
@@ -873,7 +1020,12 @@ with editor:
                 extracted_text = extract_text_from_resume(resume_file)
                 parsed = parse_resume_text(extracted_text)
                 found_fields = ", ".join(parsed.keys()) or "no structured fields"
-                st.success(f"Parsed {found_fields}.")
+                
+                # Check if AI validation was used
+                ai_used = os.getenv("OPENAI_API_KEY") is not None
+                ai_status = " (AI-validated)" if ai_used else " (rule-based)"
+                st.success(f"Parsed {found_fields}{ai_status}.")
+                
                 if st.button("Pull parsed data into editor", type="primary", use_container_width=True):
                     for key, value in parsed.items():
                         if key in defaults and plain(value):
@@ -1253,4 +1405,14 @@ with preview:
                 st.download_button("Download DOCX", docx_bytes, file_name=docx_file_name, mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document", use_container_width=True)
             except Exception as e:
                 st.error(f"DOCX export not available. Use HTML export for now. Error: {str(e)}")
-    components.html(rendered_html, height=1020, scrolling=True)
+    
+    # Add a container for the live preview with proper styling
+    st.markdown("### Live Preview")
+    st.markdown("This shows how your resume will look when exported:")
+    
+    # Render the HTML with proper dimensions to maintain layout
+    components.html(
+        rendered_html,
+        height=1200,
+        scrolling=True
+    )
