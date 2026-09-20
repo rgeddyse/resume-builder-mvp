@@ -21,8 +21,8 @@ Fast local MVP built with Streamlit with AI-powered resume building features and
 ### Content Management
 - **AI-Enhanced Resume Parsing** - Advanced parsing with fuzzy section detection (30+ variations) and AI validation
 - **Resume Import** - Import from PDF, DOCX, and TXT with intelligent field extraction
-- **Profile Photo System** - Upload from file/gallery or capture from camera
-- **Photo Beautification** - Adjust size, zoom, shape, and border styles
+- **Profile Photo System** - Upload from file/gallery or capture from camera with proper sizing (80-200px range)
+- **Photo Beautification** - Adjust size, zoom, shape, and border styles with reasonable defaults (120px)
 - **Extended Contact Details** - LinkedIn, GitHub, portfolio, email, phone, location
 - **Complete Resume Sections** - Summary, skills, experience, projects, education, certifications, languages, awards
 
@@ -183,10 +183,11 @@ Upload PDF, DOCX, or TXT from the Import tab. The parser uses AI-enhanced parsin
 
 The Template tab includes a powerful drag-and-drop style layout editor that allows you to visually arrange resume components:
 
-### Available Components (11 total)
+### Available Components (12 total)
 - 👤 **Name** - Your full name
 - 💼 **Job Title** - Your professional title
 - 📞 **Contact Info** - Email, phone, location
+- 📸 **Profile Photo** - Your profile picture (120px default, 80-200px range)
 - 📝 **Summary** - Professional summary
 - 🛠️ **Skills** - Technical and soft skills
 - 💻 **Experience** - Work experience entries
@@ -197,7 +198,7 @@ The Template tab includes a powerful drag-and-drop style layout editor that allo
 - 🏆 **Awards** - Awards and achievements
 
 ### Layout Areas (4 total)
-- **Header Area** - Top section (max 3 components)
+- **Header Area** - Top section (max 4 components)
 - **Sidebar** - Left/right column (max 4 components)
 - **Main Content** - Primary area (max 6 components)
 - **Footer** - Bottom section (max 2 components)
@@ -296,6 +297,13 @@ The resume builder now includes all standard features found in top-tier resume b
 - Check that the layout structure includes the areas you're using
 - Try switching to a different layout structure
 - Use quick presets to reset to a known working layout
+
+**Profile photo covering full area in preview:**
+- Photo size is controlled by both app settings and template CSS
+- Default size is 120px with adjustable range of 80-200px
+- Templates have fixed container sizes (100-120px) to prevent overflow
+- Use the photo size slider in Details tab to adjust
+- If photo still looks wrong, try a different template
 
 **Templates don't appear:**
 - Ensure the `templates/` folder exists and contains HTML files
