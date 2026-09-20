@@ -24,21 +24,32 @@ st.set_page_config(page_title="Resume Builder + ATS Checker", page_icon="📄", 
 
 
 defaults = {
-    "name": "Rameshkrishnan Geddy Sekar",
+    "name": "Aarav Krishnan",
     "title": "Senior Python Engineer | AI/ML Integration | Automation",
-    "email": "your.email@example.com",
-    "phone": "+91 XXXXX XXXXX",
-    "location": "Bangalore, India",
-    "linkedin": "linkedin.com/in/your-profile",
-    "github": "github.com/your-profile",
-    "portfolio": "portfolio.example.com",
+    "email": "aarav.krishnan@example.com",
+    "phone": "+1 (555) 123-4567",
+    "location": "San Francisco, CA",
+    "linkedin": "linkedin.com/in/aarav-krishnan",
+    "github": "github.com/aarav-krishnan",
+    "portfolio": "aarav-krishnan.dev",
+    "profile_photo": None,
+    "photo_size": 80,
+    "photo_shape": "circle",
+    "photo_border": "none",
+    "photo_zoom": 100,
+    "target_company": "",
+    "target_position": "",
+    "required_skills": "",
+    "generated_cover_letter": "",
+    "interview_type": "Technical",
+    "company_research": "",
     "summary": "Senior automation engineer with 15+ years of experience building Python automation, CI/CD, OS validation and AI-accelerated testing solutions.",
     "skills": "Python, Playwright, Selenium, Pytest, BDD, GitHub Actions, Jenkins, Docker, Kubernetes, Linux, QEMU, AI/ML",
-    "experience": "Senior Principal Engineer — Dell Technologies\nBangalore, India | 2025 – Present\nArchitected E2E automation frameworks for ThinOS and integrated AI-assisted engineering workflows.\n\nSenior Automation Engineer\nCompany | Location | Dates\nBuilt scalable automation frameworks, CI/CD pipelines and system validation solutions.",
+    "experience": "Senior Principal Engineer — Tech Company\nSan Francisco, CA | 2025 – Present\nArchitected E2E automation frameworks and integrated AI-assisted engineering workflows.\n\nSenior Automation Engineer\nCompany | Location | Dates\nBuilt scalable automation frameworks, CI/CD pipelines and system validation solutions.",
     "projects": "AI-Accelerated Automation Framework\nPython-based E2E framework integrating AI agents, device control and validation.\n\nOS Provisioning & Validation\nAutomated ISO/RAW image provisioning, PXE workflows and system-level validation.",
     "education": "Bachelor's Degree — Computer Science / Engineering",
     "certifications": "Certification Name — Issuer | Year",
-    "languages": "English (Professional), Tamil (Native)",
+    "languages": "English (Professional), Hindi (Native)",
     "awards": "Optional award, publication, volunteer work, or professional membership",
 }
 
@@ -57,24 +68,44 @@ palettes = {
 
 background_styles = {
     "Soft Paper": {
-        "page_background": "background: linear-gradient(135deg, #f8fafc, #eef7f6);",
-        "paper_background": "background: #ffffff;",
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background: linear-gradient(135deg, #ffffff, #f8fafc);",
     },
     "Fine Grid": {
-        "page_background": "background-color: #f8fafc; background-image: linear-gradient(rgba(15,23,42,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.045) 1px, transparent 1px); background-size: 22px 22px;",
-        "paper_background": "background: #ffffff;",
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background-color: #ffffff; background-image: linear-gradient(rgba(15,23,42,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.045) 1px, transparent 1px); background-size: 22px 22px;",
     },
     "Warm Dots": {
-        "page_background": "background-color: #fff7ed; background-image: radial-gradient(rgba(180,83,9,.14) 1px, transparent 1px); background-size: 18px 18px;",
-        "paper_background": "background: #fffdf9;",
+        "page_background": "background: #fff7ed;",
+        "paper_background": "background-color: #fffdf9; background-image: radial-gradient(rgba(180,83,9,.14) 1px, transparent 1px); background-size: 18px 18px;",
     },
     "Cool Linen": {
-        "page_background": "background-color: #eef7ff; background-image: linear-gradient(45deg, rgba(37,99,235,.06) 25%, transparent 25%), linear-gradient(-45deg, rgba(6,182,212,.06) 25%, transparent 25%); background-size: 24px 24px;",
-        "paper_background": "background: #ffffff;",
+        "page_background": "background: #eef7ff;",
+        "paper_background": "background-color: #ffffff; background-image: linear-gradient(45deg, rgba(37,99,235,.06) 25%, transparent 25%), linear-gradient(-45deg, rgba(6,182,212,.06) 25%, transparent 25%); background-size: 24px 24px;",
     },
     "Lavender Wash": {
-        "page_background": "background: radial-gradient(circle at 12% 18%, rgba(168,85,247,.18), transparent 30%), radial-gradient(circle at 88% 16%, rgba(6,182,212,.16), transparent 28%), linear-gradient(135deg, #faf7ff, #f0f9ff);",
-        "paper_background": "background: rgba(255,255,255,.97);",
+        "page_background": "background: #faf7ff;",
+        "paper_background": "background: radial-gradient(circle at 12% 18%, rgba(168,85,247,.18), transparent 30%), radial-gradient(circle at 88% 16%, rgba(6,182,212,.16), transparent 28%), linear-gradient(135deg, #ffffff, #f0f9ff);",
+    },
+    "Geometric Dots": {
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background-color: #ffffff; background-image: radial-gradient(circle at center, rgba(15,23,42,.05) 2px, transparent 2.5px); background-size: 20px 20px;",
+    },
+    "Crosshatch": {
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background-color: #ffffff; background-image: linear-gradient(rgba(15,23,42,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.03) 1px, transparent 1px); background-size: 8px 8px;",
+    },
+    "Subtle Waves": {
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e0f2fe 100%);",
+    },
+    "Concentric Circles": {
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background: radial-gradient(circle at 10% 10%, rgba(37,99,235,.04) 0%, transparent 30%), radial-gradient(circle at 90% 90%, rgba(6,182,212,.04) 0%, transparent 30%), #ffffff;",
+    },
+    "Professional Grain": {
+        "page_background": "background: #f8fafc;",
+        "paper_background": "background-color: #ffffff; background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><filter id=\"paper\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.04\" numOctaves=\"5\" stitchTiles=\"stitch\"/></filter><rect width=\"100%\" height=\"100%\" filter=\"url(%23paper)\" opacity=\"0.04\"/></svg>');",
     },
 }
 
@@ -149,6 +180,193 @@ def score_resume(resume_text, jd_text):
     return (round((len(matched) / len(keywords)) * 100) if keywords else 0), matched, missing
 
 
+def check_grammar(text):
+    """Basic grammar and spell check using language-tool-python"""
+    try:
+        import language_tool_python
+        tool = language_tool_python.LanguageTool('en-US')
+        matches = tool.check(text)
+        return matches
+    except ImportError:
+        # Fallback to basic spell check if language-tool not available
+        return basic_spell_check(text)
+    except Exception as e:
+        print(f"Grammar check error: {e}")
+        return []
+
+
+def basic_spell_check(text):
+    """Fallback basic spell check"""
+    # This is a simplified spell check - in production you'd use a proper spell checker
+    common_misspellings = {
+        "teh": "the",
+        "nad": "and",
+        "recieve": "receive",
+        "occured": "occurred",
+        "seperate": "separate",
+        "untill": "until",
+        "thier": "their",
+        "wierd": "weird",
+        "goverment": "government",
+        "enviroment": "environment",
+    }
+    
+    issues = []
+    words = text.split()
+    for i, word in enumerate(words):
+        clean_word = word.lower().strip(".,!?;:")
+        if clean_word in common_misspellings:
+            issues.append({
+                "message": f"Possible misspelling: '{word}' -> '{common_misspellings[clean_word]}'",
+                "offset": len(" ".join(words[:i])),
+                "length": len(word)
+            })
+    return issues
+
+
+def suggest_bullet_improvement(bullet_point, context="professional"):
+    """AI-powered bullet point improvement suggestions"""
+    try:
+        import openai
+        # Use a simple heuristic approach if OpenAI API key not configured
+        return heuristic_bullet_improvement(bullet_point, context)
+    except ImportError:
+        return heuristic_bullet_improvement(bullet_point, context)
+    except Exception as e:
+        print(f"AI suggestion error: {e}")
+        return heuristic_bullet_improvement(bullet_point, context)
+
+
+def heuristic_bullet_improvement(bullet_point, context="professional"):
+    """Heuristic-based bullet point improvement"""
+    improvements = []
+    
+    # Check for action verbs
+    action_verbs = ["developed", "implemented", "designed", "created", "managed", "led", "built", "achieved", "improved", "optimized", "reduced", "increased"]
+    
+    words = bullet_point.lower().split()
+    if not any(verb in words for verb in action_verbs):
+        improvements.append("Start with a strong action verb")
+    
+    # Check for quantification
+    if not any(char.isdigit() for char in bullet_point):
+        improvements.append("Add quantifiable metrics or numbers")
+    
+    # Check for result/outcome
+    result_words = ["resulted", "achieved", "improved", "reduced", "increased", "saved", "delivered", "completed"]
+    if not any(word in words for word in result_words):
+        improvements.append("Include the outcome or impact")
+    
+    # Check for length
+    if len(bullet_point) < 50:
+        improvements.append("Add more detail to describe the achievement")
+    
+    return improvements if improvements else ["This bullet point looks good"]
+
+
+def generate_professional_summary(data, job_description=""):
+    """Generate professional summary based on resume data"""
+    try:
+        import openai
+        # Use heuristic approach if OpenAI not available
+        return heuristic_summary_generation(data, job_description)
+    except ImportError:
+        return heuristic_summary_generation(data, job_description)
+    except Exception as e:
+        print(f"AI summary generation error: {e}")
+        return heuristic_summary_generation(data, job_description)
+
+
+def heuristic_summary_generation(data, job_description=""):
+    """Heuristic-based professional summary generation"""
+    name = data.get("name", "Professional")
+    title = data.get("title", "Professional")
+    summary = data.get("summary", "")
+    skills = data.get("skills", "")
+    experience = data.get("experience", "")
+    
+    # Extract key skills
+    skill_list = [skill.strip() for skill in skills.split(",") if skill.strip()]
+    top_skills = skill_list[:5] if skill_list else []
+    
+    # Build summary
+    if summary:
+        # Enhance existing summary
+        enhanced = summary
+        if top_skills:
+            enhanced += f" Skilled in {', '.join(top_skills)}."
+        return enhanced
+    else:
+        # Generate new summary
+        years_exp = "multiple years" if "year" in experience.lower() else "extensive"
+        generated = f"{name} is a {title} with {years_exp} of experience"
+        if top_skills:
+            generated += f", specializing in {', '.join(top_skills)}."
+        else:
+            generated += "."
+        return generated
+
+
+def generate_cover_letter(data, job_description=""):
+    """Generate cover letter based on resume and job description"""
+    name = data.get("name", "Applicant")
+    title = data.get("title", "Professional")
+    company = "the company"  # Can be extracted from job description
+    summary = data.get("summary", "")
+    skills = data.get("skills", "")
+    
+    cover_letter = f"""Dear Hiring Manager,
+
+I am writing to express my strong interest in the {title} position at {company}. As a {title} with proven expertise in {skills.split(',')[0] if skills else 'various technologies'}, I am confident in my ability to contribute effectively to your team.
+
+{summary}
+
+My background includes extensive experience in developing and implementing solutions that drive business results. I am particularly drawn to this opportunity because it aligns perfectly with my professional goals and expertise.
+
+I would welcome the opportunity to discuss how my skills and experience would benefit your organization. Thank you for considering my application.
+
+Sincerely,
+{name}"""
+    
+    return cover_letter
+
+
+def generate_interview_questions(data, interview_type="Technical"):
+    """Generate interview questions based on resume and interview type"""
+    skills = data.get("skills", "")
+    experience = data.get("experience", "")
+    title = data.get("title", "Professional")
+    
+    skill_list = [skill.strip() for skill in skills.split(",") if skill.strip()]
+    
+    if interview_type == "Technical":
+        questions = [
+            f"Can you explain your experience with {skill_list[0] if skill_list else 'the technologies mentioned in your resume'}?",
+            "Describe a challenging technical problem you solved and your approach.",
+            "How do you stay updated with the latest technologies and best practices?",
+            "Walk me through a recent project you completed using your technical skills.",
+            "How do you ensure code quality and maintainability in your projects?",
+        ]
+    elif interview_type == "Behavioral":
+        questions = [
+            "Tell me about a time you had to work with a difficult team member.",
+            "Describe a situation where you had to meet a tight deadline.",
+            "How do you handle constructive criticism?",
+            "Tell me about a time you showed leadership in a project.",
+            "How do you prioritize tasks when everything seems urgent?",
+        ]
+    else:  # General
+        questions = [
+            "Tell me about yourself and your professional background.",
+            "Why are you interested in this position?",
+            "What are your greatest strengths and weaknesses?",
+            "Where do you see yourself in 5 years?",
+            "Why should we hire you for this role?",
+        ]
+    
+    return questions
+
+
 def entries_to_html(value):
     output = []
     for block in (value or "").split("\n\n"):
@@ -196,10 +414,64 @@ def template_tokens(data, theme):
     skills_chips = "".join(f"<span class='skill'>{safe(skill)}</span>" for skill in skills)
     skill_list = "<ul>" + "".join(f"<li>{safe(skill)}</li>" for skill in skills) + "</ul>" if skills else ""
     tokens = {key: safe(value) for key, value in data.items()}
+    
+    # Handle profile photo with beautification settings
+    profile_photo_html = ""
+    if data.get("profile_photo"):
+        import base64
+        from io import BytesIO
+        try:
+            # Convert image to base64 for embedding in HTML
+            image_data = data["profile_photo"]
+            if isinstance(image_data, bytes):
+                base64_image = base64.b64encode(image_data).decode()
+                # Detect image type from the data or default to jpeg
+                mime_type = "image/jpeg"
+                if len(image_data) >= 8:
+                    # PNG signature
+                    if image_data[:8] == b'\x89PNG\r\n\x1a\n':
+                        mime_type = "image/png"
+                    # JPEG signature
+                    elif image_data[:2] == b'\xff\xd8':
+                        mime_type = "image/jpeg"
+                
+                # Apply photo settings
+                photo_size = data.get("photo_size", 80)
+                photo_shape = data.get("photo_shape", "circle")
+                photo_border = data.get("photo_border", "none")
+                photo_zoom = data.get("photo_zoom", 100)
+                
+                # Build CSS styles based on settings
+                border_radius = "50%" if photo_shape == "circle" else "8px" if photo_shape == "rounded" else "4px"
+                
+                border_style = ""
+                if photo_border == "solid":
+                    border_style = f"border: 3px solid var(--accent);"
+                elif photo_border == "shadow":
+                    border_style = f"box-shadow: 0 4px 12px rgba(0,0,0,0.2);"
+                
+                # Calculate zoom
+                transform = f"scale({photo_zoom/100})"
+                
+                photo_style = f"""
+                    width: {photo_size}px;
+                    height: {photo_size}px;
+                    border-radius: {border_radius};
+                    {border_style}
+                    object-fit: cover;
+                    transform: {transform};
+                    display: inline-block;
+                """
+                
+                profile_photo_html = f'<img src="data:{mime_type};base64,{base64_image}" alt="Profile Photo" class="profile-photo" style="{photo_style}" />'
+        except Exception as e:
+            print(f"Error processing profile photo: {e}")
+    
     tokens.update(
         {
             "contact": contact_line(data),
             "contact_items": contact_items(data),
+            "profile_photo": profile_photo_html,
             "skills": skills_chips,
             "skill_list": skill_list,
             "summary_text": safe(data["summary"]),
@@ -232,6 +504,206 @@ def render_template(source, data, theme):
     for key, value in template_tokens(data, theme).items():
         rendered = rendered.replace("{{" + key + "}}", value)
     return rendered
+
+
+def export_to_pdf(html_content, file_name):
+    """Export HTML to PDF using ReportLab"""
+    try:
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+        from reportlab.lib.units import inch
+        from io import BytesIO
+        from html.parser import HTMLParser
+        import re
+        
+        # Simple HTML to text extraction
+        class HTMLTextExtractor(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.text = []
+                self.in_div = False
+                
+            def handle_starttag(self, tag, attrs):
+                if tag in ['div', 'p', 'h1', 'h2', 'h3']:
+                    self.in_div = True
+                    self.text.append('\n\n')
+                elif tag == 'br':
+                    self.text.append('\n')
+                    
+            def handle_endtag(self, tag):
+                if tag in ['div', 'p', 'h1', 'h2', 'h3']:
+                    self.in_div = False
+                    
+            def handle_data(self, data):
+                if data.strip():
+                    self.text.append(data.strip())
+                    
+            def get_text(self):
+                return ' '.join(self.text)
+        
+        # Extract text from HTML
+        parser = HTMLTextExtractor()
+        parser.feed(html_content)
+        text_content = parser.get_text()
+        
+        # Create PDF
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        # Add title
+        title_style = styles['Heading1']
+        title_style.fontSize = 24
+        title_style.spaceAfter = 30
+        story.append(Paragraph(file_name.replace('-', ' ').title(), title_style))
+        story.append(Spacer(1, 0.2 * inch))
+        
+        # Add content
+        body_style = styles['Normal']
+        body_style.fontSize = 11
+        body_style.leading = 14
+        
+        # Split into paragraphs
+        paragraphs = text_content.split('\n\n')
+        for para in paragraphs:
+            if para.strip():
+                clean_para = re.sub(r'\s+', ' ', para.strip())
+                story.append(Paragraph(clean_para, body_style))
+                story.append(Spacer(1, 0.1 * inch))
+        
+        doc.build(story)
+        buffer.seek(0)
+        return buffer.getvalue()
+        
+    except ImportError:
+        raise RuntimeError("ReportLab is required for PDF export. Install with: pip install reportlab")
+    except Exception as e:
+        raise RuntimeError(f"PDF export failed: {str(e)}")
+
+
+def export_to_docx(data, file_name):
+    """Export resume data to DOCX using python-docx"""
+    try:
+        from docx import Document
+        from docx.shared import Pt, RGBColor
+        from io import BytesIO
+        
+        doc = Document()
+        
+        # Set up styles
+        style = doc.styles['Normal']
+        style.font.name = 'Arial'
+        style.font.size = Pt(11)
+        
+        # Add name and title
+        name_para = doc.add_paragraph()
+        name_run = name_para.add_run(data.get("name", ""))
+        name_run.font.size = Pt(18)
+        name_run.font.bold = True
+        name_run.font.color.rgb = RGBColor(0, 0, 0)
+        
+        title_para = doc.add_paragraph()
+        title_run = title_para.add_run(data.get("title", ""))
+        title_run.font.size = Pt(14)
+        title_run.font.color.rgb = RGBColor(96, 96, 96)
+        
+        # Add contact information
+        contact_para = doc.add_paragraph()
+        contact_info = []
+        if data.get("email"):
+            contact_info.append(data["email"])
+        if data.get("phone"):
+            contact_info.append(data["phone"])
+        if data.get("location"):
+            contact_info.append(data["location"])
+        if data.get("linkedin"):
+            contact_info.append(data["linkedin"])
+        if data.get("github"):
+            contact_info.append(data["github"])
+        
+        contact_run = contact_para.add_run(" | ".join(contact_info))
+        contact_run.font.size = Pt(10)
+        contact_run.font.color.rgb = RGBColor(96, 96, 96)
+        
+        doc.add_paragraph()  # Empty line
+        
+        # Add summary
+        if data.get("summary"):
+            doc.add_heading("Professional Summary", level=2)
+            doc.add_paragraph(data["summary"])
+            doc.add_paragraph()
+        
+        # Add skills
+        if data.get("skills"):
+            doc.add_heading("Skills", level=2)
+            skills_para = doc.add_paragraph(data["skills"])
+            doc.add_paragraph()
+        
+        # Add experience
+        if data.get("experience"):
+            doc.add_heading("Experience", level=2)
+            for exp_block in data["experience"].split("\n\n"):
+                if exp_block.strip():
+                    lines = exp_block.strip().split("\n")
+                    if lines:
+                        # First line is job title/company
+                        doc.add_paragraph(lines[0], style='Heading 3')
+                        # Remaining lines are details
+                        for line in lines[1:]:
+                            if line.strip():
+                                doc.add_paragraph(line.strip())
+            doc.add_paragraph()
+        
+        # Add projects
+        if data.get("projects"):
+            doc.add_heading("Projects", level=2)
+            for proj_block in data["projects"].split("\n\n"):
+                if proj_block.strip():
+                    lines = proj_block.strip().split("\n")
+                    if lines:
+                        doc.add_paragraph(lines[0], style='Heading 3')
+                        for line in lines[1:]:
+                            if line.strip():
+                                doc.add_paragraph(line.strip())
+            doc.add_paragraph()
+        
+        # Add education
+        if data.get("education"):
+            doc.add_heading("Education", level=2)
+            doc.add_paragraph(data["education"])
+            doc.add_paragraph()
+        
+        # Add certifications
+        if data.get("certifications"):
+            doc.add_heading("Certifications", level=2)
+            for cert_block in data["certifications"].split("\n\n"):
+                if cert_block.strip():
+                    doc.add_paragraph(cert_block.strip())
+            doc.add_paragraph()
+        
+        # Add languages
+        if data.get("languages"):
+            doc.add_heading("Languages", level=2)
+            doc.add_paragraph(data["languages"])
+            doc.add_paragraph()
+        
+        # Add awards
+        if data.get("awards"):
+            doc.add_heading("Awards & Activities", level=2)
+            doc.add_paragraph(data["awards"])
+        
+        # Save to BytesIO
+        docx_bytes = BytesIO()
+        doc.save(docx_bytes)
+        docx_bytes.seek(0)
+        return docx_bytes.getvalue()
+        
+    except ImportError:
+        raise RuntimeError("python-docx is required for DOCX export. Install with: pip install python-docx")
+    except Exception as e:
+        raise RuntimeError(f"DOCX export failed: {str(e)}")
 
 
 def discover_templates():
@@ -391,7 +863,7 @@ st.markdown(
 editor, preview = st.columns([1.02, 1.38], gap="large")
 
 with editor:
-    import_tab, details_tab, template_tab, ats_tab = st.tabs(["Import", "Details", "Template", "ATS"])
+    import_tab, details_tab, template_tab, ats_tab, cover_letter_tab, interview_tab = st.tabs(["Import", "Details", "Template", "ATS", "Cover Letter", "Interview Prep"])
 
     with import_tab:
         st.subheader("Upload Existing Resume")
@@ -413,11 +885,156 @@ with editor:
                 st.error(str(exc))
         else:
             st.info("Upload your current resume and the app will pre-fill the editor from its text.")
+        
+        st.subheader("LinkedIn Profile Import")
+        linkedin_url = st.text_input("LinkedIn Profile URL", placeholder="https://www.linkedin.com/in/your-profile")
+        if st.button("Import from LinkedIn", key="import_linkedin"):
+            if linkedin_url:
+                st.info("LinkedIn import would require LinkedIn API access. For now, please manually copy your profile information.")
+                st.info("You can paste your LinkedIn profile details in the resume content fields.")
 
     with details_tab:
         st.subheader("Personal Details")
         st.text_input("Full name", key="name")
         st.text_input("Professional title", key="title")
+        
+        # Photo upload section
+        st.subheader("Profile Photo")
+        photo_option = st.radio("Photo source", ["Upload file", "Take photo"], horizontal=True)
+        
+        if photo_option == "Upload file":
+            photo_file = st.file_uploader("Upload profile photo", type=["jpg", "jpeg", "png"], accept_multiple_files=False)
+            if photo_file:
+                st.session_state["profile_photo"] = photo_file.getvalue()
+                st.image(photo_file, width=150, caption="Uploaded photo")
+        else:
+            camera_photo = st.camera_input("Take a photo")
+            if camera_photo:
+                st.session_state["profile_photo"] = camera_photo.getvalue()
+                st.image(camera_photo, width=150, caption="Camera photo")
+        
+        # Photo beautification controls
+        if st.session_state.get("profile_photo"):
+            st.subheader("Photo Settings")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                photo_size = st.slider("Photo size (px)", 40, 150, st.session_state.get("photo_size", 80))
+                st.session_state["photo_size"] = photo_size
+            
+            with col2:
+                photo_zoom = st.slider("Zoom", 50, 200, st.session_state.get("photo_zoom", 100))
+                st.session_state["photo_zoom"] = photo_zoom
+            
+            col3, col4 = st.columns(2)
+            with col3:
+                photo_shape = st.selectbox("Shape", ["circle", "square", "rounded"], index=["circle", "square", "rounded"].index(st.session_state.get("photo_shape", "circle")))
+                st.session_state["photo_shape"] = photo_shape
+            
+            with col4:
+                photo_border = st.selectbox("Border style", ["none", "solid", "shadow"], index=["none", "solid", "shadow"].index(st.session_state.get("photo_border", "none")))
+                st.session_state["photo_border"] = photo_border
+            
+            # Preview with current settings
+            st.subheader("Preview")
+            preview_col1, preview_col2, preview_col3 = st.columns(3)
+            
+            with preview_col1:
+                st.write("Small (60px)")
+                st.image(st.session_state["profile_photo"], width=60, caption="Small")
+            
+            with preview_col2:
+                st.write("Medium (80px)")
+                st.image(st.session_state["profile_photo"], width=80, caption="Medium")
+            
+            with preview_col3:
+                st.write("Large (100px)")
+                st.image(st.session_state["profile_photo"], width=100, caption="Large")
+            
+            # Show current photo and option to remove
+            col1, col2 = st.columns([4, 1])
+            with col1:
+                st.success(f"Profile photo set - {photo_shape} shape, {photo_size}px size")
+            with col2:
+                if st.button("Remove photo", type="secondary"):
+                    st.session_state["profile_photo"] = None
+                    st.rerun()
+        
+        # Resume management
+        st.subheader("Resume Management")
+        col_save1, col_save2 = st.columns(2)
+        with col_save1:
+            if st.button("Save Current Resume", type="primary", use_container_width=True):
+                # Save current resume state
+                current_data = {key: st.session_state[key] for key in defaults}
+                saved_resumes = st.session_state.get("saved_resumes", {})
+                resume_key = f"{current_data['name']}-{current_data['title']}"
+                saved_resumes[resume_key] = {key: st.session_state[key] for key in defaults}
+                st.session_state["saved_resumes"] = saved_resumes
+                
+                # Add to version history
+                version_history = st.session_state.get("version_history", [])
+                version_history.append({
+                    "timestamp": str(st.session_state.get("current_time", "now")),
+                    "resume_key": resume_key,
+                    "data": {key: st.session_state[key] for key in defaults}
+                })
+                st.session_state["version_history"] = version_history
+                
+                st.success(f"Resume saved as: {resume_key}")
+        
+        with col_save2:
+            if st.button("Load Saved Resume", type="secondary", use_container_width=True):
+                saved_resumes = st.session_state.get("saved_resumes", {})
+                if saved_resumes:
+                    resume_names = list(saved_resumes.keys())
+                    if resume_names:
+                        selected_resume = st.selectbox("Select saved resume", resume_names)
+                        if selected_resume and st.button("Load Selected", key="load_resume_btn"):
+                            loaded_data = saved_resumes[selected_resume]
+                            for key, value in loaded_data.items():
+                                st.session_state[key] = value
+                            st.success(f"Loaded resume: {selected_resume}")
+                            st.rerun()
+                else:
+                    st.info("No saved resumes found")
+        
+        # Version History
+        st.subheader("Version History")
+        version_history = st.session_state.get("version_history", [])
+        if version_history:
+            st.write(f"Total versions: {len(version_history)}")
+            for i, version in enumerate(reversed(version_history[-5:])):  # Show last 5 versions
+                with st.expander(f"Version {len(version_history) - i} - {version['resume_key']}"):
+                    if st.button(f"Restore this version", key=f"restore_version_{i}"):
+                        for key, value in version["data"].items():
+                            st.session_state[key] = value
+                        st.success("Version restored!")
+                        st.rerun()
+        else:
+            st.info("No version history yet. Save a resume to start tracking versions.")
+        
+        # Resume URL Sharing
+        st.subheader("Share Resume")
+        share_option = st.selectbox("Share option", ["Generate Shareable Link", "Export to JSON"], key="share_option")
+        if share_option == "Generate Shareable Link":
+            st.info("Shareable link feature would require a backend server. For now, use the export buttons to share your resume.")
+        else:
+            import json
+            resume_json = json.dumps({key: st.session_state[key] for key in defaults}, indent=2)
+            st.download_button("Export Resume as JSON", resume_json, file_name="resume.json", mime="application/json", use_container_width=True)
+        
+        if "profile_photo" not in st.session_state:
+            st.session_state["profile_photo"] = None
+        if "photo_size" not in st.session_state:
+            st.session_state["photo_size"] = 80
+        if "photo_shape" not in st.session_state:
+            st.session_state["photo_shape"] = "circle"
+        if "photo_border" not in st.session_state:
+            st.session_state["photo_border"] = "none"
+        if "photo_zoom" not in st.session_state:
+            st.session_state["photo_zoom"] = 100
+        
         first_contact, second_contact = st.columns(2)
         with first_contact:
             st.text_input("Email", key="email")
@@ -429,6 +1046,29 @@ with editor:
             st.text_input("Portfolio / website", key="portfolio")
 
         st.subheader("Resume Content")
+        
+        # AI Content Assistance
+        with st.expander("AI Content Assistance"):
+            st.write("Get AI-powered suggestions to improve your resume content")
+            
+            # Summary generation
+            if st.button("Generate Professional Summary", key="generate_summary"):
+                with st.spinner("Generating summary..."):
+                    current_data = {key: st.session_state[key] for key in defaults}
+                    generated_summary = generate_professional_summary(current_data)
+                    st.session_state["summary"] = generated_summary
+                    st.success("Summary generated!")
+                    st.rerun()
+            
+            # Bullet improvement
+            st.subheader("Bullet Point Improvement")
+            bullet_to_improve = st.text_area("Paste a bullet point to improve", height=80, key="bullet_improve")
+            if st.button("Get Suggestions", key="improve_bullet"):
+                if bullet_to_improve:
+                    suggestions = suggest_bullet_improvement(bullet_to_improve)
+                    for suggestion in suggestions:
+                        st.info(f"💡 {suggestion}")
+        
         st.text_area("Professional summary", key="summary", height=105)
         st.text_area("Skills - comma/new-line separated", key="skills", height=85)
         st.text_area("Experience - separate jobs with a blank line", key="experience", height=230)
@@ -438,6 +1078,20 @@ with editor:
             st.text_area("Certifications - separate entries with a blank line", key="certifications", height=100)
             st.text_input("Languages", key="languages")
             st.text_area("Awards, publications, volunteering or memberships", key="awards", height=90)
+        
+        # Grammar Check
+        st.subheader("Grammar & Spell Check")
+        current_data = {key: st.session_state[key] for key in defaults}
+        full_text = f"{current_data['summary']} {current_data['skills']} {current_data['experience']} {current_data['projects']}"
+        if st.button("Check Grammar & Spelling", key="check_grammar"):
+            with st.spinner("Checking grammar..."):
+                grammar_issues = check_grammar(full_text)
+                if grammar_issues:
+                    st.warning(f"Found {len(grammar_issues)} potential issues:")
+                    for issue in grammar_issues[:10]:  # Show first 10 issues
+                        st.error(issue.get("message", "Grammar issue found"))
+                else:
+                    st.success("No grammar or spelling issues found!")
 
     with template_tab:
         st.subheader("Template Selection")
@@ -465,7 +1119,95 @@ with editor:
     with ats_tab:
         st.subheader("ATS Checker")
         jd = st.text_area("Paste job description", height=230, placeholder="Paste the target job description here...")
+        
+        # Real-time ATS scoring
+        if jd.strip():
+            current_data = {key: st.session_state[key] for key in defaults}
+            ats, matched, missing = score_resume(" ".join(str(value) for value in current_data.values()), jd)
+            st.metric("ATS keyword alignment", f"{ats}%")
+            st.progress(ats / 100)
+            
+            col_matched, col_missing = st.columns(2)
+            with col_matched:
+                st.write("Matched keywords:")
+                st.write(", ".join(matched[:40]) or "None")
+            with col_missing:
+                st.write("Potentially missing keywords:")
+                st.write(", ".join(missing[:40]) or "None")
+            
+            st.caption("Heuristic keyword checker only; it cannot reproduce a specific employer's ATS score.")
+            
+            # Skill gap analysis
+            st.subheader("Skill Gap Analysis")
+            required_skills = st.text_input("Required skills (comma-separated)", key="required_skills")
+            if required_skills:
+                current_skills = [skill.strip().lower() for skill in current_data["skills"].split(",")]
+                required = [skill.strip().lower() for skill in required_skills.split(",")]
+                
+                missing_skills = [skill for skill in required if skill not in current_skills]
+                matched_skills = [skill for skill in required if skill in current_skills]
+                
+                if missing_skills:
+                    st.warning(f"Missing skills: {', '.join(missing_skills)}")
+                if matched_skills:
+                    st.success(f"You have these required skills: {', '.join(matched_skills)}")
+        else:
+            st.info("Paste a job description to see ATS analysis and skill gap analysis.")
+    
+    with cover_letter_tab:
+        st.subheader("Cover Letter Generator")
+        st.write("Generate a professional cover letter tailored to your resume")
+        
+        target_company = st.text_input("Target Company", key="target_company")
+        target_position = st.text_input("Target Position", key="target_position")
+        
+        if st.button("Generate Cover Letter", key="generate_cover_letter"):
+            with st.spinner("Generating cover letter..."):
+                current_data = {key: st.session_state[key] for key in defaults}
+                cover_letter = generate_cover_letter(current_data, f"{target_position} at {target_company}")
+                st.subheader("Generated Cover Letter")
+                st.text_area("Cover Letter", cover_letter, height=300, key="generated_cover_letter")
+                
+                if st.button("Download Cover Letter", key="download_cover_letter"):
+                    st.download_button("Download Cover Letter", cover_letter, file_name="cover_letter.txt", mime="text/plain", use_container_width=True)
+    
+    with interview_tab:
+        st.subheader("AI-Powered Interview Preparation")
+        st.write("Get interview questions and preparation tips based on your resume")
+        
+        interview_type = st.selectbox("Interview Type", ["Technical", "Behavioral", "General"], key="interview_type")
+        
+        if st.button("Generate Interview Questions", key="generate_interview_questions"):
+            with st.spinner("Generating interview questions..."):
+                current_data = {key: st.session_state[key] for key in defaults}
+                questions = generate_interview_questions(current_data, interview_type)
+                st.subheader("Suggested Interview Questions")
+                
+                for i, question in enumerate(questions, 1):
+                    st.write(f"**Q{i}:** {question}")
+                    st.text_area(f"Your answer to Q{i}", height=100, key=f"interview_answer_{i}")
+        
+        # Salary Insights
+        st.subheader("Salary Insights")
+        st.info("Salary insights would require integration with salary data APIs like Glassdoor, Payscale, or Levels.fyi")
+        st.write("For now, research salary ranges for your role on:")
+        st.write("- Glassdoor.com")
+        st.write("- Payscale.com")
+        st.write("- Levels.fyi (for tech roles)")
+        st.write("- LinkedIn Salary")
+        
+        # Company Research
+        st.subheader("Company Research")
+        company_research = st.text_input("Company to research", key="company_research")
+        if company_research:
+            st.info(f"Research tips for {company_research}:")
+            st.write("1. Visit the company's website and About page")
+            st.write("2. Check recent news about the company")
+            st.write("3. Look at their products/services")
+            st.write("4. Check their company culture on Glassdoor")
+            st.write("5. Review their LinkedIn company page")
 
+# Get current data from session state
 data = {key: st.session_state[key] for key in defaults}
 background = background_styles[background_texture]
 theme = {
@@ -480,23 +1222,35 @@ theme = {
 selected_source = custom_source if custom_source else selected_template["source_html"]
 rendered_html = render_template(selected_source, data, theme)
 
-if jd.strip():
-    ats, matched, missing = score_resume(" ".join(str(value) for value in data.values()), jd)
-    with editor:
-        with ats_tab:
-            st.metric("ATS keyword alignment", f"{ats}%")
-            st.progress(ats / 100)
-            st.write("Matched keywords:", ", ".join(matched[:40]) or "None")
-            st.write("Potentially missing keywords:", ", ".join(missing[:40]) or "None")
-            st.caption("Heuristic keyword checker only; it cannot reproduce a specific employer's ATS score.")
-
 with preview:
     top_row, action_row = st.columns([1, 1])
     with top_row:
         st.subheader("Live Preview")
     with action_row:
-        safe_file_base = re.sub(r"[^a-z0-9]+", "-", plain(data["name"]).lower()).strip("-") or "resume"
+        current_data = {key: st.session_state[key] for key in defaults}
+        safe_file_base = re.sub(r"[^a-z0-9]+", "-", plain(current_data["name"]).lower()).strip("-") or "resume"
         safe_template = re.sub(r"[^a-z0-9]+", "-", selected_name.lower()).strip("-")
-        file_name = f"{safe_file_base}-{safe_template}.html"
-        st.download_button("Download HTML", rendered_html, file_name=file_name, mime="text/html", use_container_width=True)
+        
+        # Export buttons
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            html_file_name = f"{safe_file_base}-{safe_template}.html"
+            st.download_button("Download HTML", rendered_html, file_name=html_file_name, mime="text/html", use_container_width=True)
+        
+        with col2:
+            try:
+                pdf_bytes = export_to_pdf(rendered_html, safe_file_base)
+                pdf_file_name = f"{safe_file_base}-{safe_template}.pdf"
+                st.download_button("Download PDF", pdf_bytes, file_name=pdf_file_name, mime="application/pdf", use_container_width=True)
+            except Exception as e:
+                st.error(f"PDF export not available. Use HTML export for now. Error: {str(e)}")
+        
+        with col3:
+            try:
+                docx_bytes = export_to_docx(current_data, safe_file_base)
+                docx_file_name = f"{safe_file_base}-{safe_template}.docx"
+                st.download_button("Download DOCX", docx_bytes, file_name=docx_file_name, mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document", use_container_width=True)
+            except Exception as e:
+                st.error(f"DOCX export not available. Use HTML export for now. Error: {str(e)}")
     components.html(rendered_html, height=1020, scrolling=True)

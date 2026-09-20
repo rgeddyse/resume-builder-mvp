@@ -1,0 +1,30 @@
+# Virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+
+# PDF and DOCX files from desktop
+*.pdf
+*.docx
+*.doc
+*.jpg
+*.JPG
+*.jpeg
+*.PNG
+*.png
+
+# Analysis scripts
+analyze_resumes.py
+detailed_pdf_analysis.py
+
+# Star core files
+star_core_*.txt
+
+# Desktop files
+untitled folder/
+DSC_*.JPG
+Latest_Resume.pdf
+Rameshkrishnan_*.pdf
+Rameshkrishnan_*.docx
+Rameshkrishnan_*.doc

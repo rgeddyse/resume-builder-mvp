@@ -11,7 +11,8 @@
     .page { max-width: 900px; min-height: 1120px; margin: 20px auto; {{paper_background}} display: grid; grid-template-columns: 35% 1fr; box-shadow: 0 20px 45px rgba(15, 23, 42, .12); }
     .rail { background: color-mix(in srgb, var(--secondary) 18%, white); padding: 38px 28px; border-right: 1px solid color-mix(in srgb, var(--accent) 18%, white); }
     .main { padding: 38px 44px 44px; }
-    .avatar { width: 74px; height: 74px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--secondary)); margin-bottom: 20px; box-shadow: inset 0 0 0 9px rgba(255,255,255,.72); }
+    .avatar { min-width: 74px; min-height: 74px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--secondary)); margin: 0 auto 20px; box-shadow: inset 0 0 0 9px rgba(255,255,255,.72); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .profile-photo { width: 100%; height: 100%; object-fit: cover; }
     h1 { margin: 0; font-size: 32px; line-height: 1.05; letter-spacing: 0; color: #111827; }
     .title { margin-top: 8px; color: var(--accent); font-weight: 800; }
     h2 { color: #111827; font-size: 13px; text-transform: uppercase; letter-spacing: .09em; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid color-mix(in srgb, var(--secondary) 42%, white); }
@@ -25,13 +26,13 @@
     .main .skill { display: inline-block; margin-right: 6px; border: 1px solid color-mix(in srgb, var(--secondary) 42%, white); border-left-width: 4px; }
     .compact .item { margin-bottom: 9px; }
     @media print { body { background: #fff; } .page { margin: 0; box-shadow: none; max-width: none; } }
-    @media (max-width: 760px) { .page { grid-template-columns: 1fr; margin: 0; } .rail, .main { padding: 28px; } }
+    @media (max-width: 760px) { .page { grid-template-columns: 1fr; margin: 0; } .rail, .main { padding: 28px; } .rail { text-align: center; } }
   </style>
 </head>
 <body>
   <div class="page {{density}}">
     <aside class="rail">
-      <div class="avatar"></div>
+      <div class="avatar">{{profile_photo}}</div>
       <h2>Contact</h2>
       <div class="contact">{{contact_items}}</div>
       {{skills_section}}
